@@ -284,11 +284,8 @@ even better.
 > >
 > >
 > >~~~
-> ># A tibble: 2 × 2
-> >       country mean_lifeExp
-> >        <fctr>        <dbl>
-> >1      Iceland     76.51142
-> >2 Sierra Leone     36.76917
+> >  mean_lifeExp
+> >1     59.47444
 > >~~~
 > >{: .output}
 > Another way to do this is to use the `dplyr` function `arrange()`, which 
@@ -307,10 +304,8 @@ even better.
 > >
 > >
 > >~~~
-> ># A tibble: 1 × 2
-> >       country mean_lifeExp
-> >        <fctr>        <dbl>
-> >1 Sierra Leone     36.76917
+> >  mean_lifeExp
+> >1     59.47444
 > >~~~
 > >{: .output}
 > >
@@ -326,10 +321,8 @@ even better.
 > >
 > >
 > >~~~
-> ># A tibble: 1 × 2
-> >  country mean_lifeExp
-> >   <fctr>        <dbl>
-> >1 Iceland     76.51142
+> >  mean_lifeExp
+> >1     59.47444
 > >~~~
 > >{: .output}
 > {: .solution}

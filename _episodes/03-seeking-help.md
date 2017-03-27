@@ -115,14 +115,14 @@ sessionInfo()
 
 
 ~~~
-R version 3.3.3 (2017-03-06)
+R version 3.3.1 (2016-06-21)
 Platform: x86_64-pc-linux-gnu (64-bit)
-Running under: KDE neon User Edition 5.9
+Running under: Ubuntu 16.04.2 LTS
 
 locale:
- [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
- [3] LC_TIME=en_GB.UTF-8        LC_COLLATE=en_US.UTF-8    
- [5] LC_MONETARY=de_DE.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [1] LC_CTYPE=de_DE.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=de_DE.UTF-8        LC_COLLATE=de_DE.UTF-8    
+ [5] LC_MONETARY=de_DE.UTF-8    LC_MESSAGES=de_DE.UTF-8   
  [7] LC_PAPER=de_DE.UTF-8       LC_NAME=C                 
  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
 [11] LC_MEASUREMENT=de_DE.UTF-8 LC_IDENTIFICATION=C       
@@ -131,10 +131,10 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  base     
 
 other attached packages:
-[1] checkpoint_0.3.18 stringr_1.1.0     knitr_1.15.1     
+[1] checkpoint_0.3.18 stringr_1.2.0     knitr_1.15.1      colorout_1.0-3   
 
 loaded via a namespace (and not attached):
-[1] magrittr_1.5  tools_3.3.3   stringi_1.1.2 methods_3.3.3 evaluate_0.10
+[1] magrittr_1.5  tools_3.3.1   stringi_1.1.3 methods_3.3.1 evaluate_0.10
 ~~~
 {: .output}
 

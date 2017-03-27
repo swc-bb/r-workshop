@@ -67,7 +67,7 @@ cats <- cbind(cats, age)
 
 
 ~~~
-Error in data.frame(..., check.names = FALSE): arguments imply differing number of rows: 3, 4
+Error in data.frame(..., check.names = FALSE): Argumente implizieren unterschiedliche Anzahl Zeilen: 3, 4
 ~~~
 {: .error}
 
@@ -122,8 +122,8 @@ cats <- rbind(cats, newRow)
 
 
 ~~~
-Warning in `[<-.factor`(`*tmp*`, ri, value = "tortoiseshell"): invalid
-factor level, NA generated
+Warning in `[<-.factor`(`*tmp*`, ri, value = "tortoiseshell"): ungültiges
+Faktorniveau, NA erzeugt
 ~~~
 {: .error}
 

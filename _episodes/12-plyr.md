@@ -118,6 +118,47 @@ library("plyr")
 ~~~
 {: .r}
 
+
+
+~~~
+-------------------------------------------------------------------------
+~~~
+{: .output}
+
+
+
+~~~
+You have loaded plyr after dplyr - this is likely to cause problems.
+If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
+library(plyr); library(dplyr)
+~~~
+{: .output}
+
+
+
+~~~
+-------------------------------------------------------------------------
+~~~
+{: .output}
+
+
+
+~~~
+
+Attache Paket: 'plyr'
+~~~
+{: .output}
+
+
+
+~~~
+The following objects are masked from 'package:dplyr':
+
+    arrange, count, desc, failwith, id, mutate, rename, summarise,
+    summarize
+~~~
+{: .output}
+
 Plyr has functions for operating on `lists`, `data.frames` and `arrays`
 (matrices, or n-dimensional vectors). Each function performs:
 

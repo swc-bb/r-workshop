@@ -251,7 +251,7 @@ x[c(-1, -5)]  # or x[-c(1,5)]
 >
 > 
 > ~~~
-> Error in x[-1:3]: only 0's may be mixed with negative subscripts
+> Error in x[-1:3]: nur Nullen dürfen mit negativen Indizes gemischt werden
 > ~~~
 > {: .error}
 >
@@ -630,8 +630,8 @@ names(x) == c('a', 'c')
 
 
 ~~~
-Warning in names(x) == c("a", "c"): longer object length is not a multiple
-of shorter object length
+Warning in names(x) == c("a", "c"): Länge des längeren Objektes
+ 	 ist kein Vielfaches der Länge des kürzeren Objektes
 ~~~
 {: .error}
 
@@ -983,7 +983,7 @@ m[, c(3,6)]
 
 
 ~~~
-Error in m[, c(3, 6)]: subscript out of bounds
+Error in m[, c(3, 6)]: Indizierung außerhalb der Grenzen
 ~~~
 {: .error}
 
@@ -1167,7 +1167,7 @@ xlist[[1:2]]
 
 
 ~~~
-Error in xlist[[1:2]]: subscript out of bounds
+Error in xlist[[1:2]]: Indizierung außerhalb der Grenzen
 ~~~
 {: .error}
 

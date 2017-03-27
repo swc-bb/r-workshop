@@ -1,19 +1,25 @@
 ---
-title: Functions Explained
+title: Functions and testing
 teaching: 45
-exercises: 15
+exercises: 45
 questions:
+- "Functions:"
 - "How can I write a new function in R?"
+- "Testing:"
 objectives:
+- "Functions:"
 - "Define a function that takes arguments."
 - "Return a value from a function."
 - "Test a function."
 - "Set default values for function arguments."
 - "Explain why we should divide programs into small, single-purpose functions."
+- "Testing:"
 keypoints:
+- "Functions:"
 - "Use `function` to define a new function in R."
 - "Use parameters to pass values into functions."
 - "Load functions into programs using `source`."
+- "Testing:"
 source: Rmd
 ---
 
