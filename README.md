@@ -1,6 +1,8 @@
 R for Reproducible Scientific Analysis
 ======================================
 
+rendered version: <https://swc-bb.github.io/2017-05-17-r-workshop>
+
 An introduction to R for non-programmers using the [Gapminder][gapminder] data.
 Please see <https://swcarpentry.github.io/r-novice-gapminder> for a rendered version of this material,
 [the lesson template documentation][lesson-example]
