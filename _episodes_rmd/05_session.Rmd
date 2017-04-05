@@ -1,37 +1,37 @@
 ---
-title: Creating Publication-Quality Graphics
+title: Data preparation (factors, dplyr) and plotting graphics with ggplot2
 teaching: 60
 exercises: 30
 questions:
-- "Factors:"
+<!-- - "Factors:" -->
 - "How is categorical data represented in R?"
 - "How do I work with factors?"
-- "dplyr:"
+<!-- - "dplyr:" -->
 - "How can I manipulate dataframes without repeating myself?"
-- "Plotting:"
+<!-- - "Plotting:" -->
 - "How can I create publication-quality graphics in R?"
 objectives:
-- "Factors:"
+<!-- - "Factors:" -->
 - "Understand how to represent categorical data in R."
 - "Know the difference between ordered and unordered factors."
 - "Be aware of some of the problems encountered when using factors."
-- "dplyr:"
+<!-- - "dplyr:" -->
 - " To be able to use the six main dataframe manipulation 'verbs' with pipes in  `dplyr`."
-- "Plotting:"
+<!-- - "Plotting:" -->
 - "To be able to use ggplot2 to generate publication quality graphics."
 - "To understand the basic grammar of graphics, including the aesthetics and geometry layers, adding statistics, transforming scales, and coloring or panelling by groups."
 keypoints:
-- "Factors:"
+<!-- - "Factors:" -->
 - "Factors are used to represent categorical data."
 - "Factors can be *ordered* or *unordered*."
 - "Some R functions have special methods for handling factors."
-- "dplyr:"
+<!-- - "dplyr:" -->
 - "Use the `dplyr` package to manipulate dataframes."
 - "Use `select()` to choose variables from a dataframe."
 - "Use `filter()` to choose data based on values."
 - "Use `group_by()` and `summarize()` to work with subsets of data."
 - "Use `mutate()` to create new variables."
-- "Plotting:"
+<!-- - "Plotting:" -->
 - "Use `ggplot2` to create plots."
 - "Think about graphics in layers: aesthetics, geometry, statistics, scale transformation, and grouping."
 source: Rmd
@@ -42,7 +42,7 @@ source('../bin/chunk-options.R')
 knitr_fig_path("12-supp-factors-")
 ```
 
-FACTORS:
+# Factors
 
 Factors are used to represent categorical data. Factors can be ordered or
 unordered and are an important class for statistical analysis and for plotting.
@@ -139,6 +139,8 @@ f <- levels(f)[f]
 f <- as.numeric(f)
 ```
 
+# TAKE THIS OUT UNTIL 'XX'
+
 ### Using Factors
 
 Lets load our example data to see the use of factors:
@@ -227,7 +229,9 @@ plot(x = dat$Gender, y = dat$BloodPressure)
 > ```
 {: .callout}
 
-DPLYR:
+# XX
+
+# `dplyr()`:
 
 ```{r, include=FALSE}
 source("../bin/chunk-options.R")
@@ -451,6 +455,8 @@ gdp_pop_bycontinents_byyear <- gapminder %>%
               sd_gdp_billion=sd(gdp_billion))
 ```
 
+# TAKE THIS OUT UNTIL 'XX'
+
 ## Combining `dplyr` and `ggplot2`
 
 In the plotting lesson we looked at how to make a multi-panel figure by adding
@@ -499,6 +505,8 @@ gapminder %>%
 	geom_line() + 
 	facet_wrap( ~ country)
 ```
+
+# XX
 
 > ## Advanced Challenge
 >
@@ -827,13 +835,28 @@ names that start with the letter "A" or "Z".
 > `starts.with == "A" | starts.with == "Z"`)
 {: .callout}
 
+Using `dplyr` functions also helps us simplify things, for example we could
+combine the first two steps:
 
+```{r}
+gapminder %>%
+    # Filter countries that start with "A" or "Z"
+	filter(substr(country, start = 1, stop = 1) %in% c("A", "Z")) %>%
+	# Make the plot
+	ggplot(aes(x = year, y = lifeExp, color = continent)) + 
+	geom_line() + 
+	facet_wrap( ~ country)
+```
+
+
+# TAKE THIS OUT UNTIL 'XX'
 ```{r facet}
 starts.with <- substr(gapminder$country, start = 1, stop = 1)
 az.countries <- gapminder[starts.with %in% c("A", "Z"), ]
 ggplot(data = az.countries, aes(x = year, y = lifeExp, color=continent)) +
   geom_line() + facet_wrap( ~ country)
 ```
+# XX
 
 The `facet_wrap` layer took a "formula" as its argument, denoted by the tilde
 (~). This tells R to draw a panel for each unique value in the country column
