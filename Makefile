@@ -57,7 +57,7 @@ workshop-check :
 .PHONY : lesson-check lesson-md lesson-files lesson-fixme
 
 # RMarkdown files
-RMD_SRC = $(wildcard _episodes_rmd/??-*.Rmd)
+RMD_SRC = $(wildcard _episodes_rmd/??_*.Rmd)
 RMD_DST = $(patsubst _episodes_rmd/%.Rmd,_episodes/%.md,$(RMD_SRC))
 
 # Lesson source files in the order they appear in the navigation menu.
