@@ -1,37 +1,28 @@
 ---
-title: Creating Publication-Quality Graphics
+title: Data preparation (factors, dplyr) and plotting graphics with ggplot2
 teaching: 60
 exercises: 30
 questions:
-- "Factors:"
 - "How is categorical data represented in R?"
 - "How do I work with factors?"
-- "dplyr:"
 - "How can I manipulate dataframes without repeating myself?"
-- "Plotting:"
 - "How can I create publication-quality graphics in R?"
 objectives:
-- "Factors:"
 - "Understand how to represent categorical data in R."
 - "Know the difference between ordered and unordered factors."
 - "Be aware of some of the problems encountered when using factors."
-- "dplyr:"
 - " To be able to use the six main dataframe manipulation 'verbs' with pipes in  `dplyr`."
-- "Plotting:"
 - "To be able to use ggplot2 to generate publication quality graphics."
 - "To understand the basic grammar of graphics, including the aesthetics and geometry layers, adding statistics, transforming scales, and coloring or panelling by groups."
 keypoints:
-- "Factors:"
 - "Factors are used to represent categorical data."
 - "Factors can be *ordered* or *unordered*."
 - "Some R functions have special methods for handling factors."
-- "dplyr:"
 - "Use the `dplyr` package to manipulate dataframes."
 - "Use `select()` to choose variables from a dataframe."
 - "Use `filter()` to choose data based on values."
 - "Use `group_by()` and `summarize()` to work with subsets of data."
 - "Use `mutate()` to create new variables."
-- "Plotting:"
 - "Use `ggplot2` to create plots."
 - "Think about graphics in layers: aesthetics, geometry, statistics, scale transformation, and grouping."
 source: Rmd
@@ -39,7 +30,7 @@ source: Rmd
 
 
 
-FACTORS:
+# Factors
 
 Factors are used to represent categorical data. Factors can be ordered or
 unordered and are an important class for statistical analysis and for plotting.
@@ -241,6 +232,8 @@ f <- levels(f)[f]
 f <- as.numeric(f)
 ~~~
 {: .r}
+
+# TAKE THIS OUT UNTIL 'XX'
 
 ### Using Factors
 
@@ -458,7 +451,9 @@ Error in plot(x = dat$Gender, y = dat$BloodPressure): Objekt 'dat' nicht gefunde
 > {: .error}
 {: .callout}
 
-DPLYR:
+# XX
+
+# `dplyr()`:
 
 
 
@@ -822,6 +817,8 @@ gdp_pop_bycontinents_byyear <- gapminder %>%
 ~~~
 {: .r}
 
+# TAKE THIS OUT UNTIL 'XX'
+
 ## Combining `dplyr` and `ggplot2`
 
 In the plotting lesson we looked at how to make a multi-panel figure by adding
@@ -883,6 +880,8 @@ gapminder %>%
 
 <img src="../fig/rmd-13-unnamed-chunk-20-1.png" title="plot of chunk unnamed-chunk-20" alt="plot of chunk unnamed-chunk-20" style="display: block; margin: auto;" />
 
+# XX
+
 > ## Advanced Challenge
 >
 > Calculate the average life expectancy in 2002 of 2 randomly selected countries
@@ -911,7 +910,7 @@ gapminder %>%
 * [Introduction to dplyr](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)
 * [Data wrangling with R and RStudio](https://www.rstudio.com/resources/webinars/data-wrangling-with-r-and-rstudio/)
 
-PLOTTING:
+# ggplot2
 
 
 
@@ -1269,7 +1268,25 @@ names that start with the letter "A" or "Z".
 > `starts.with == "A" | starts.with == "Z"`)
 {: .callout}
 
+Using `dplyr` functions also helps us simplify things, for example we could
+combine the first two steps:
 
+
+~~~
+gapminder %>%
+    # Filter countries that start with "A" or "Z"
+	filter(substr(country, start = 1, stop = 1) %in% c("A", "Z")) %>%
+	# Make the plot
+	ggplot(aes(x = year, y = lifeExp, color = continent)) + 
+	geom_line() + 
+	facet_wrap( ~ country)
+~~~
+{: .r}
+
+<img src="../fig/rmd-08-unnamed-chunk-25-1.png" title="plot of chunk unnamed-chunk-25" alt="plot of chunk unnamed-chunk-25" style="display: block; margin: auto;" />
+
+
+# TAKE THIS OUT UNTIL 'XX'
 
 ~~~
 starts.with <- substr(gapminder$country, start = 1, stop = 1)
@@ -1280,6 +1297,7 @@ ggplot(data = az.countries, aes(x = year, y = lifeExp, color=continent)) +
 {: .r}
 
 <img src="../fig/rmd-08-facet-1.png" title="plot of chunk facet" alt="plot of chunk facet" style="display: block; margin: auto;" />
+# XX
 
 The `facet_wrap` layer took a "formula" as its argument, denoted by the tilde
 (~). This tells R to draw a panel for each unique value in the country column

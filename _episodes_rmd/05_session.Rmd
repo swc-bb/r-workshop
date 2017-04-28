@@ -3,35 +3,26 @@ title: Data preparation (factors, dplyr) and plotting graphics with ggplot2
 teaching: 60
 exercises: 30
 questions:
-<!-- - "Factors:" -->
 - "How is categorical data represented in R?"
 - "How do I work with factors?"
-<!-- - "dplyr:" -->
 - "How can I manipulate dataframes without repeating myself?"
-<!-- - "Plotting:" -->
 - "How can I create publication-quality graphics in R?"
 objectives:
-<!-- - "Factors:" -->
 - "Understand how to represent categorical data in R."
 - "Know the difference between ordered and unordered factors."
 - "Be aware of some of the problems encountered when using factors."
-<!-- - "dplyr:" -->
 - " To be able to use the six main dataframe manipulation 'verbs' with pipes in  `dplyr`."
-<!-- - "Plotting:" -->
 - "To be able to use ggplot2 to generate publication quality graphics."
 - "To understand the basic grammar of graphics, including the aesthetics and geometry layers, adding statistics, transforming scales, and coloring or panelling by groups."
 keypoints:
-<!-- - "Factors:" -->
 - "Factors are used to represent categorical data."
 - "Factors can be *ordered* or *unordered*."
 - "Some R functions have special methods for handling factors."
-<!-- - "dplyr:" -->
 - "Use the `dplyr` package to manipulate dataframes."
 - "Use `select()` to choose variables from a dataframe."
 - "Use `filter()` to choose data based on values."
 - "Use `group_by()` and `summarize()` to work with subsets of data."
 - "Use `mutate()` to create new variables."
-<!-- - "Plotting:" -->
 - "Use `ggplot2` to create plots."
 - "Think about graphics in layers: aesthetics, geometry, statistics, scale transformation, and grouping."
 source: Rmd
@@ -534,7 +525,7 @@ gapminder %>%
 * [Introduction to dplyr](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)
 * [Data wrangling with R and RStudio](https://www.rstudio.com/resources/webinars/data-wrangling-with-r-and-rstudio/)
 
-PLOTTING:
+# ggplot2
 
 ```{r, include=FALSE}
 source("../bin/chunk-options.R")
