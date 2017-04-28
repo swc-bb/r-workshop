@@ -233,226 +233,6 @@ f <- as.numeric(f)
 ~~~
 {: .r}
 
-# TAKE THIS OUT UNTIL 'XX'
-
-### Using Factors
-
-Lets load our example data to see the use of factors:
-
-
-~~~
-dat <- read.csv(file = 'data/sample.csv', stringsAsFactors = TRUE)
-~~~
-{: .r}
-
-
-
-~~~
-Warning in file(file, "rt"): kann Datei 'data/sample.csv' nicht öffnen:
-Datei oder Verzeichnis nicht gefunden
-~~~
-{: .error}
-
-
-
-~~~
-Error in file(file, "rt"): kann Verbindung nicht öffnen
-~~~
-{: .error}
-
-> ## Default Behavior
->
-> `stringsAsFactors=TRUE` is the default behavior for R.
-> We could leave this argument out.
-> It is included here for clarity.
-{: .callout}
-
-
-~~~
-str(dat)
-~~~
-{: .r}
-
-
-
-~~~
-Error in str(dat): Objekt 'dat' nicht gefunden
-~~~
-{: .error}
-
-Notice the first 3 columns have been converted to factors. These values were text in the data file so R automatically interpreted them as categorical variables.
-
-
-~~~
-summary(dat)
-~~~
-{: .r}
-
-
-
-~~~
-Error in summary(dat): Objekt 'dat' nicht gefunden
-~~~
-{: .error}
-
-Notice the `summary()` function handles factors differently to numbers (and strings), the occurrence counts for each value is often more useful information.
-
-> ## The `summary()` Function
->
-> The `summary()` function is a great way of spotting errors in your data (look at the *dat$Gender* column).
-> It's also a great way for spotting missing data.
-{: .callout}
-
-> ## Reordering Factors
->
-> The function `table()` tabulates observations and can be used to create bar plots quickly. For instance:
->
-> 
-> ~~~
-> table(dat$Group)
-> ~~~
-> {: .r}
-> 
-> 
-> 
-> ~~~
-> Error in table(dat$Group): Objekt 'dat' nicht gefunden
-> ~~~
-> {: .error}
-> 
-> 
-> 
-> ~~~
-> barplot(table(dat$Group))
-> ~~~
-> {: .r}
-> 
-> 
-> 
-> ~~~
-> Error in table(dat$Group): Objekt 'dat' nicht gefunden
-> ~~~
-> {: .error}
-> Use the `factor()` command to modify the column dat$Group so that the *control* group is plotted last
-{: .challenge}
-
-### Removing Levels from a Factor
-
-Some of the Gender values in our dataset have been coded incorrectly.
-Let's remove factors.
-
-
-~~~
-barplot(table(dat$Gender))
-~~~
-{: .r}
-
-
-
-~~~
-Error in table(dat$Gender): Objekt 'dat' nicht gefunden
-~~~
-{: .error}
-
-Values should have been recorded as lowercase 'm' & 'f'. We should correct this.
-
-
-~~~
-dat$Gender[dat$Gender == 'M'] <- 'm'
-~~~
-{: .r}
-
-
-
-~~~
-Error in dat$Gender[dat$Gender == "M"] <- "m": Objekt 'dat' nicht gefunden
-~~~
-{: .error}
-
-> ## Updating Factors
->
-> 
-> ~~~
-> plot(x = dat$Gender, y = dat$BloodPressure)
-> ~~~
-> {: .r}
-> 
-> 
-> 
-> ~~~
-> Error in plot(x = dat$Gender, y = dat$BloodPressure): Objekt 'dat' nicht gefunden
-> ~~~
-> {: .error}
->
-> Why does this plot show 4 levels?
->
-> *Hint* how many levels does dat$Gender have?
-{: .challenge}
-
-We need to tell R that "M" is no longer a valid value for this column.
-We use the `droplevels()` function to remove extra levels.
-
-
-~~~
-dat$Gender <- droplevels(dat$Gender)
-~~~
-{: .r}
-
-
-
-~~~
-Error in droplevels(dat$Gender): Objekt 'dat' nicht gefunden
-~~~
-{: .error}
-
-
-
-~~~
-plot(x = dat$Gender, y = dat$BloodPressure)
-~~~
-{: .r}
-
-
-
-~~~
-Error in plot(x = dat$Gender, y = dat$BloodPressure): Objekt 'dat' nicht gefunden
-~~~
-{: .error}
-
-> ## Adjusting Factor Levels
->
-> Adjusting the `levels()` of a factor provides a useful shortcut for reassigning values in this case.
->
-> 
-> ~~~
-> levels(dat$Gender)[2] <- 'f'
-> ~~~
-> {: .r}
-> 
-> 
-> 
-> ~~~
-> Error in levels(dat$Gender)[2] <- "f": Objekt 'dat' nicht gefunden
-> ~~~
-> {: .error}
-> 
-> 
-> 
-> ~~~
-> plot(x = dat$Gender, y = dat$BloodPressure)
-> ~~~
-> {: .r}
-> 
-> 
-> 
-> ~~~
-> Error in plot(x = dat$Gender, y = dat$BloodPressure): Objekt 'dat' nicht gefunden
-> ~~~
-> {: .error}
-{: .callout}
-
-# XX
-
 # `dplyr()`:
 
 
@@ -817,92 +597,6 @@ gdp_pop_bycontinents_byyear <- gapminder %>%
 ~~~
 {: .r}
 
-# TAKE THIS OUT UNTIL 'XX'
-
-## Combining `dplyr` and `ggplot2`
-
-In the plotting lesson we looked at how to make a multi-panel figure by adding
-a layer of facet panels using `ggplot2`. Here is the code we used (with some
-extra comments):
-
-
-~~~
-# Get the start letter of each country
-starts.with <- substr(gapminder$country, start = 1, stop = 1)
-# Filter countries that start with "A" or "Z"
-az.countries <- gapminder[starts.with %in% c("A", "Z"), ]
-# Make the plot
-ggplot(data = az.countries, aes(x = year, y = lifeExp, color = continent)) +
-  geom_line() + facet_wrap( ~ country)
-~~~
-{: .r}
-
-<img src="../fig/rmd-13-unnamed-chunk-18-1.png" title="plot of chunk unnamed-chunk-18" alt="plot of chunk unnamed-chunk-18" style="display: block; margin: auto;" />
-
-This code makes the right plot but it also creates some variables (`starts.with`
-and `az.countries`) that we might not have any other uses for. Just as we used
-`%>%` to pipe data along a chain of `dplyr` functions we can use it to pass data
-to `ggplot()`. Because `%>%` replaces the first argument in a function we don't
-need to specify the `data =` argument in the `ggplot()` function. By combining
-`dplyr` and `ggplot2` functions we can make the same figure without creating any
-new variables or modifying the data.  
-
-
-~~~
-gapminder %>% 
-   # Get the start letter of each country 
-   mutate(startsWith = substr(country, start = 1, stop = 1)) %>% 
-   # Filter countries that start with "A" or "Z"
-   filter(startsWith %in% c("A", "Z")) %>%
-   # Make the plot
-   ggplot(aes(x = year, y = lifeExp, color = continent)) + 
-   geom_line() + 
-   facet_wrap( ~ country)
-~~~
-{: .r}
-
-<img src="../fig/rmd-13-unnamed-chunk-19-1.png" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" style="display: block; margin: auto;" />
-
-Using `dplyr` functions also helps us simplify things, for example we could
-combine the first two steps:
-
-
-~~~
-gapminder %>%
-    # Filter countries that start with "A" or "Z"
-	filter(substr(country, start = 1, stop = 1) %in% c("A", "Z")) %>%
-	# Make the plot
-	ggplot(aes(x = year, y = lifeExp, color = continent)) + 
-	geom_line() + 
-	facet_wrap( ~ country)
-~~~
-{: .r}
-
-<img src="../fig/rmd-13-unnamed-chunk-20-1.png" title="plot of chunk unnamed-chunk-20" alt="plot of chunk unnamed-chunk-20" style="display: block; margin: auto;" />
-
-# XX
-
-> ## Advanced Challenge
->
-> Calculate the average life expectancy in 2002 of 2 randomly selected countries
-> for each continent. Then arrange the continent names in reverse order.
-> **Hint:** Use the `dplyr` functions `arrange()` and `sample_n()`, they have
-> similar syntax to other dplyr functions.
->
-> > ## Solution to Advanced Challenge
-> >
-> >~~~
-> >lifeExp_2countries_bycontinents <- gapminder %>%
-> >    filter(year==2002) %>%
-> >    group_by(continent) %>%
-> >    sample_n(2) %>%
-> >    summarize(mean_lifeExp=mean(lifeExp)) %>%
-> >    arrange(desc(mean_lifeExp))
-> >~~~
-> >{: .r}
-> {: .solution}
-{: .challenge}
-
 ## Other great resources
 
 * [R for Data Science](r4ds.had.co.nz)
@@ -974,7 +668,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp))
 ~~~
 {: .r}
 
-<img src="../fig/rmd-08-unnamed-chunk-23-1.png" title="plot of chunk unnamed-chunk-23" alt="plot of chunk unnamed-chunk-23" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-unnamed-chunk-19-1.png" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" style="display: block; margin: auto;" />
 
 We need to tell `ggplot` how we want to visually represent the data, which we
 do by adding a new **geom** layer. In our example, we used `geom_point`, which
@@ -990,7 +684,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
 
 <img src="../fig/rmd-08-lifeExp-vs-gdpPercap-scatter2-1.png" title="plot of chunk lifeExp-vs-gdpPercap-scatter2" alt="plot of chunk lifeExp-vs-gdpPercap-scatter2" style="display: block; margin: auto;" />
 
-> ## Challenge 1
+> ## Challenge 3
 >
 > Modify the example so that the figure shows how life expectancy has
 > changed over time:
@@ -1004,7 +698,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
 > Hint: the gapminder dataset has a column called "year", which should appear
 > on the x-axis.
 >
-> > ## Solution to challenge 1
+> > ## Solution to challenge 3
 > >
 > > Here is one possible solution:
 > >
@@ -1020,7 +714,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
 {: .challenge}
 
 >
-> ## Challenge 2
+> ## Challenge 4
 >
 > In the previous examples and challenge we've used the `aes` function to tell
 > the scatterplot **geom** about the **x** and **y** locations of each point.
@@ -1028,7 +722,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
 > code from the previous challenge to **color** the points by the "continent"
 > column. What trends do you see in the data? Are they what you expected?
 >
-> > ## Solution to challenge 2
+> > ## Solution to challenge 4
 > >
 > > In the previous examples and challenge we've used the `aes` function to tell
 > > the scatterplot **geom** about the **x** and **y** locations of each point.
@@ -1102,12 +796,12 @@ lines.
 > So far, we've seen how to use an aesthetic (such as **color**) as a *mapping* to a variable in the data. For example, when we use `geom_line(aes(color=continent))`, ggplot will give a different color to each continent. But what if we want to change the colour of all lines to blue? You may think that `geom_line(aes(color="blue"))` should work, but it doesn't. Since we don't want to create a mapping to a specific variable, we simply move the color specification outside of the `aes()` function, like this: `geom_line(color="blue")`.
 {: .callout}
 
-> ## Challenge 3
+> ## Challenge 5
 >
 > Switch the order of the point and line layers from the previous example. What
 > happened?
 >
-> > ## Solution to challenge 3
+> > ## Solution to challenge 5
 > >
 > > Switch the order of the point and line layers from the previous example. What
 > > happened?
@@ -1197,14 +891,14 @@ aesthetic by passing it as an argument to `geom_smooth`. Previously in the
 lesson we've used the `aes` function to define a *mapping* between data
 variables and their visual representation.
 
-> ## Challenge 4a
+> ## Challenge 6a
 >
 > Modify the color and size of the points on the point layer in the previous
 > example.
 >
 > Hint: do not use the `aes` function.
 >
-> > ## Solution to challenge 4a
+> > ## Solution to challenge 6a
 > >
 > > Modify the color and size of the points on the point layer in the previous
 > > example.
@@ -1224,15 +918,15 @@ variables and their visual representation.
 {: .challenge}
 
 
-> ## Challenge 4b
+> ## Challenge 6b
 >
-> Modify your solution to Challenge 4a so that the
+> Modify your solution to Challenge 6a so that the
 > points are now a different shape and are colored by continent with new
 > trendlines.  Hint: The color argument can be used inside the aesthetic.
 >
-> > ## Solution to challenge 4b
+> > ## Solution to challenge 6b
 > >
-> > Modify Challenge 4 so that the points are now a different shape and are
+> > Modify Challenge 6a so that the points are now a different shape and are
 > > colored by continent with new trendlines.
 > >
 > > Hint: The color argument can be used inside the aesthetic.
@@ -1283,49 +977,11 @@ gapminder %>%
 ~~~
 {: .r}
 
-<img src="../fig/rmd-08-unnamed-chunk-25-1.png" title="plot of chunk unnamed-chunk-25" alt="plot of chunk unnamed-chunk-25" style="display: block; margin: auto;" />
-
-
-# TAKE THIS OUT UNTIL 'XX'
-
-~~~
-starts.with <- substr(gapminder$country, start = 1, stop = 1)
-az.countries <- gapminder[starts.with %in% c("A", "Z"), ]
-ggplot(data = az.countries, aes(x = year, y = lifeExp, color=continent)) +
-  geom_line() + facet_wrap( ~ country)
-~~~
-{: .r}
-
-<img src="../fig/rmd-08-facet-1.png" title="plot of chunk facet" alt="plot of chunk facet" style="display: block; margin: auto;" />
-# XX
+<img src="../fig/rmd-08-unnamed-chunk-21-1.png" title="plot of chunk unnamed-chunk-21" alt="plot of chunk unnamed-chunk-21" style="display: block; margin: auto;" />
 
 The `facet_wrap` layer took a "formula" as its argument, denoted by the tilde
 (~). This tells R to draw a panel for each unique value in the country column
 of the gapminder dataset.
-
-## Modifying text
-
-To clean this figure up for a publication we need to change some of the text
-elements. The x-axis is too cluttered, and the y axis should read
-"Life expectancy", rather than the column name in the data frame.
-
-We can do this by adding a couple of different layers. The **theme** layer
-controls the axis text, and overall text size, and there are special layers
-for changing the axis labels. To change the legend title, we need to use the
-**scales** layer.
-
-
-~~~
-ggplot(data = az.countries, aes(x = year, y = lifeExp, color=continent)) +
-  geom_line() + facet_wrap( ~ country) +
-  xlab("Year") + ylab("Life expectancy") + ggtitle("Figure 1") +
-  scale_colour_discrete(name="Continent") +
-  theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())
-~~~
-{: .r}
-
-<img src="../fig/rmd-08-theme-1.png" title="plot of chunk theme" alt="plot of chunk theme" style="display: block; margin: auto;" />
-
 
 This is a taste of what you can do with `ggplot2`. RStudio provides a
 really useful [cheat sheet][cheat] of the different layers available, and more
@@ -1338,7 +994,7 @@ code to modify!
 [ggplot-doc]: http://docs.ggplot2.org/current/
 
 
-> ## Challenge 5
+> ## Challenge 7
 >
 > Create a density plot of GDP per capita, filled by continent.
 >
@@ -1346,7 +1002,7 @@ code to modify!
 >  - Transform the x axis to better visualise the data spread.
 >  - Add a facet layer to panel the density plots by year.
 >
-> > ## Solution to challenge 5
+> > ## Solution to challenge 7
 > >
 > > Create a density plot of GDP per capita, filled by continent.
 > >
