@@ -203,7 +203,7 @@ Now we have a good directory structure we will now place/save the data file in t
 > > 
 > > 
 > > ~~~
-> > -rw-r--r-- 1 mreich hydro 80K Mär 27 14:55 data/gapminder-FiveYearData.csv
+> > -rw-r--r-- 1 sluedtke hydro 80K Mar 23 13:46 data/gapminder-FiveYearData.csv
 > > ~~~
 > > {: .output}
 > > The file size is 80K.

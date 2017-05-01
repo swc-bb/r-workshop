@@ -183,8 +183,8 @@ Did anyone get a warning message like this?
 
 
 ~~~
-Warning in if (gapminder$year == 2012) {: Bedingung hat Länge > 1 und nur
-das erste Element wird benutzt
+Warning in if (gapminder$year == 2012) {: the condition has length > 1 and
+only the first element will be used
 ~~~
 {: .error}
 

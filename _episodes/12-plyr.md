@@ -145,7 +145,7 @@ library(plyr); library(dplyr)
 
 ~~~
 
-Attache Paket: 'plyr'
+Attaching package: 'plyr'
 ~~~
 {: .output}
 
