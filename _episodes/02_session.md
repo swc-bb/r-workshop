@@ -759,7 +759,7 @@ dat <- read.csv(FALSE, "data/inflammation-01.csv")
 
 
 ~~~
-Error in read.table(file = file, header = header, sep = sep, quote = quote, : 'file' must be a character string or connection
+Error in read.table(file = file, header = header, sep = sep, quote = quote, : 'file' muss eine Zeichenkette oder eine Verbindung sein
 ~~~
 {: .error}
 
@@ -972,7 +972,7 @@ dat <- read.csv(FALSE, "data/inflammation-01.csv")
 
 
 ~~~
-Error in read.table(file = file, header = header, sep = sep, quote = quote, : 'file' must be a character string or connection
+Error in read.table(file = file, header = header, sep = sep, quote = quote, : 'file' muss eine Zeichenkette oder eine Verbindung sein
 ~~~
 {: .error}
 

@@ -1,5 +1,5 @@
 ---
-title: Data preparation (factors, dplyr) and plotting graphics with ggplot2
+title: Tidyverse and plotting with ggplot
 teaching: 60
 exercises: 30
 questions:
