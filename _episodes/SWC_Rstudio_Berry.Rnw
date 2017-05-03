@@ -135,7 +135,7 @@ knowledge survey to determine focus for this session\\
 
 \begin{frame}{RStudio configuration}
 \begin{flushleft}
-\href{https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts}{keyboard shortcuts} (ALT+SHIFT+K)\\[1em]
+\href{https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts}{keyboard shortcuts} (\rcode{ALT}+\rcode{SHIFT}+\rcode{K})\\[1em]
 \pause
 Recommended settings for reproducible research under\\
 \alert{Tools - Global Options - General}\\
@@ -337,8 +337,17 @@ If you accidentally change one element to a character, all are converted and cal
 \item Briefly explain the \rcode{summary} of the linear model.
 \end{itemize}
 \end{frame}
+
 % ---------------------------
 
+\begin{frame}[fragile]{More things}
+\begin{itemize}[<+->]
+\item Connect Rstudio to github
+\item Plotting
+\end{itemize}
+\end{frame}
+
+% ---------------------------
 \section{Appendix}
 
 % ---------------------------
