@@ -1,22 +1,25 @@
-R for Reproducible Scientific Analysis
+Modified Workshop of SWCs: R for Reproducible Scientific Analysis
 ======================================
 
-rendered version: <https://swc-bb.github.io/2017-05-17-r-workshop>
+Based on the Software Carpentry Lesson "R for Reproducible Scientific Analysis", this is a modified version which covers the following 5 sessions:
 
-An introduction to R for non-programmers using the [Gapminder][gapminder] data.
-Please see <https://swcarpentry.github.io/r-novice-gapminder> for a rendered version of this material,
-[the lesson template documentation][lesson-example]
-for instructions on formatting, building, and submitting material,
-or run `make` in this directory for a list of helpful commands.
+1 Introduction to R and Rstudio
+2 Functions and testing
+3 Vectorization
+4 Making Packages in R
+5 Tidyverse and plotting with ggplot
 
-The goal of this lesson is to teach novice programmers to write modular code
-and best practices for using R for data analysis. R is commonly used in many
-scientific disciplines for statistical analysis and its array of third-party
-packages. We find that many scientists who come to Software Carpentry workshops
-use R and want to learn more. The emphasis of these materials is to give
-attendees a strong foundation in the fundamentals of R, and to teach best
-practices for scientific computing: breaking down analyses into modular units,
-task automation, and encapsulation.
+This workshop is meant for people with some prior knowledge of R.
+The idea was to choose important topics for reproducible research standards within the field of earth-science.
+Many people here use R but there is still a lack of "getting the bigger picture" with respect to certain publication standards concerning code and data.
+The goal is therefore to broaden the horizon of what is possible and what is necessary, so every participant
+has the change to adapt their own coding research structure afterwards with all or parts of the content convered.
+
+Rendered version of the content: <https://swc-bb.github.io/2017-05-17-r-workshop>
+
+These sessions are mainly using the [Gapminder][gapminder] data.
+
+The original SWC Lesson can be found here: <https://swcarpentry.github.io/r-novice-gapminder>.
 
 Note that this workshop focuses on the fundamentals of the programming
 language R, and not on statistical analysis.
@@ -26,12 +29,11 @@ are not necessarily the best, nor are they comprehensive, but they are
 packages we find useful, and have been chosen primarily for their 
 usability.
 
-Maintainers:
+Original developers and maintainers at SWC:
 
 * [Tom Wright][wright_tom]
 * [Naupaka Zimmerman][zimmerman_naupaka]
 
 [gapminder]: http://www.gapminder.org/
-[lesson-example]: https://swcarpentry.github.io/lesson-example
 [wright_tom]: http://software-carpentry.org/team/#wright_thomas
 [zimmerman_naupaka]: http://software-carpentry.org/team/#zimmerman_naupaka
