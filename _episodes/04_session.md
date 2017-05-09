@@ -1,7 +1,7 @@
 ---
-title: "Making Packages in R"
-teaching: 30
-exercises: 0
+title: "Package creation and debugging"
+teaching: 60
+exercises: 30
 questions:
 - "How do I collect my code together so I can reuse it and share it?"
 - "How do I make my own packages?"
@@ -16,6 +16,7 @@ keypoints:
 ---
 
 
+## Create an R package
 
 Why should you make your own R packages?
 
@@ -56,35 +57,33 @@ Suggestion: organize in a logical manner so that you know which file holds which
 
 ### Making your first R package
 
-Let's turn our temperature conversion functions into an R package.
+Let's turn our XX functions into an R package.
 
 
 ~~~
-fahr_to_kelvin <- function(temp) {
-    #Converts Fahrenheit to Kelvin
-    kelvin <- ((temp - 32) * (5/9)) + 273.15
-    kelvin
+bb_unitHydrograph <- function(
+    n,
+    k,
+    t)
+{
+if(length(n)>1 | length(k)>1) 42
+  stop("n and k can only have one single value!
+For vectorization, use sapply (see documentation examples).")
+t^(n-1) / k^n / gamma(n) * exp(-t/k)  # some say /k^(n-1) for the second term!
 }
 ~~~
 {: .r}
 
 
 ~~~
-kelvin_to_celsius <- function(temp) {
-  #Converts Kelvin to Celsius
-  Celsius <- temp - 273.15
-  Celsius
-}
-~~~
-{: .r}
-
-
-~~~
-fahr_to_celsius <- function(temp) {
-  #Converts Fahrenheit to Celsius using fahr_to_kelvin() and kelvin_to_celsius()
-  temp_k <- fahr_to_kelvin(temp)
-	result <- kelvin_to_celsius(temp_k)
-  result
+bb_superPos <- function(
+  P, # Precipitation
+  UH) # discrete UnitHydrograph
+{
+added <- length(UH)-"1"
+qsim <- rep(0, length(P)+added )
+for(i in 1:length(P) ) qsim[i:(i+added)] <- P[i]*UH + qsim[i:(i+added)]
+qsim
 }
 ~~~
 {: .r}
@@ -111,7 +110,7 @@ Keep the name simple and unique.
 
 ~~~
 setwd(parentDirectory)
-create("tempConvert")
+create("hydrograph")
 ~~~
 {: .r}
 
@@ -142,8 +141,7 @@ Now, we will use `roxygen2` to convert our documentation to the standard R forma
 
 
 ~~~
-setwd("./tempConvert")
-document()
+document("./toRpackage")
 ~~~
 {: .r}
 
@@ -154,12 +152,95 @@ Now, let's load the package and take a look at the documentation.
 
 
 ~~~
-setwd("..")
-install("tempConvert")
+install("Rpack")
 
 ?fahr_to_kelvin
 ~~~
 {: .r}
+> ## Challenge 1
+>
+> Write a documentation for the function called `superPos`
+> and create the corresponding help files. Take a look at them if they
+> understandable
+>
+> > ## Solution to challenge 1
+> >
+> > Write a documentation for the function called `superPos`
+> > and create the corresponding help files. Take a look at them if they
+> > understandable
+> >
+> > 
+> > ~~~
+> > #' Convert Fahrenheit to Kelvin
+> > #'
+> > #' This function converts input temperatures in Fahrenheit to Kelvin.
+> > #' @param temp The input temperature.
+> > #' @export
+> > #' @examples
+> > #' fahr_to_kelvin(32)
+> > 
+> > fahr_to_kelvin <- function(temp) {
+> >   #Converts Fahrenheit to Kelvin
+> >   kelvin <- ((temp - 32) * (5/9)) + 273.15
+> >   kelvin
+> > }
+> > 
+> > setwd("./tempConvert")
+> > ~~~
+> > {: .r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in setwd("./tempConvert"): kann Arbeitsverzeichnis nicht wechseln
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
+> > document()
+> > ~~~
+> > {: .r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in eval(expr, envir, enclos): konnte Funktion "document" nicht finden
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
+> > setwd("..")
+> > install("tempConvert")
+> > ~~~
+> > {: .r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error in eval(expr, envir, enclos): konnte Funktion "install" nicht finden
+> > ~~~
+> > {: .error}
+> > 
+> > 
+> > 
+> > ~~~
+> > ?fahr_to_kelvin
+> > ~~~
+> > {: .r}
+> > 
+> > 
+> > 
+> > ~~~
+> > No documentation for 'fahr_to_kelvin' in specified packages and libraries:
+> > you could try '??fahr_to_kelvin'
+> > ~~~
+> > {: .output}
+> {: .solution}
+{: .challenge}
 
 Notice there is now a tempConvert environment that is the parent environment to the global environment.
 
@@ -180,9 +261,9 @@ fahr_to_celsius(32)
 
 
 ~~~
-[1] 0
+Error in eval(expr, envir, enclos): konnte Funktion "fahr_to_celsius" nicht finden
 ~~~
-{: .output}
+{: .error}
 
 
 
@@ -212,9 +293,45 @@ kelvin_to_celsius(273.15)
 ~~~
 {: .output}
 
-> ## Creating a Package for Distribution
+mention (and maybe link):
+
+* unit tests
+* CRAN and github?
+* Namespace and other minor details (like examples, testdata, vignette, etc.)
+
+
+## Debugging
+
+here will be "theory" and the examples, once you (berry) tell me what we will do...
+
+
+
+
+> ## Challenge 2
 >
-> 1. Create some new functions for your tempConvert package to convert from Kelvin to Fahrenheit or from Celsius to Kelvin or Fahrenheit.
-> 2. Create a package for our `analyze` function so that it will be easy to load when more data arrives.
+> Write a..
+>
+> > ## Solution to challenge 2
+> >
+> > Write a..
+> >
+> > 
+> > ~~~
+> > R = "code"
+> > a = c(1,2,3)
+> > mean(a)
+> > ~~~
+> > {: .r}
+> > 
+> > 
+> > 
+> > ~~~
+> > [1] 2
+> > ~~~
+> > {: .output}
+> {: .solution}
 {: .challenge}
+
+
+
 
