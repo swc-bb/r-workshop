@@ -30,7 +30,7 @@ source: Rmd
 
 ```{r, include = FALSE}
 source('../bin/chunk-options.R')
-knitr_fig_path("12-supp-factors-")
+knitr_fig_path("05_session-")
 ```
 
 # Factors
@@ -144,6 +144,13 @@ select certain observations (rows) or variables (columns), we often group the
 data by a certain variable(s), or we even calculate summary statistics. We can
 do these operations using the normal base R operations:
 
+Read in data first:
+
+```{r}
+gapminder <- read.csv("data/gapminder-FiveYearData.csv", header=TRUE)
+```
+
+Operation examples using normal base R:
 ```{r}
 mean(gapminder[gapminder$continent == "Africa", "gdpPercap"])
 mean(gapminder[gapminder$continent == "Americas", "gdpPercap"])
