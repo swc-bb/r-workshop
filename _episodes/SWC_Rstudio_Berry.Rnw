@@ -2,7 +2,7 @@
 % Berry Boessenkool, Potsdam University, Germany
 % berry-b@gmx.de
 
-\documentclass[compress, xcolor=dvipsnames]{beamer}
+\documentclass[compress, handout, xcolor=dvipsnames]{beamer}
 \setbeamerfont{frametitle}{size=\normalsize}
 
 \usepackage{hyperref, graphicx, tabu}
