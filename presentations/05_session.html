@@ -1,7 +1,5 @@
-<!doctype html>
 <html>
   <head>
-        <meta charset="utf-8">
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/reveal.js/3.0.0/css/reveal.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/reveal.js/3.0.0/css/theme/white.css">
 		<!-- Code syntax highlighting -->
@@ -10,46 +8,117 @@
 	<body>
 		<div class="reveal">
           <div class="slides">
+          </section>
            <!-- separator -->
             <section>
-               <h2><i> R </i></h2>
                <p>
                </p>
-               <h3>on the GFZ High Performance Cluster </h3>
+               <h2>Tidyverse and plotting with ggplot</h2>
                <p>
                </p>
-                <h5> ~5 slides for ~3400 cores </h5>
               </section>
-<section data-markdown>
-<textarea data-template>
-## Page title
-</textarea>
-</section>
-<section data-markdown data-separator="^\n----\n">
-###Title
-
-----
-
-####Title 2
-* 1
-* 2
-* 3
-</section>
-<section data-markdown>
-					<script type="text/template">
-						## Markdown support
-						Write content using inline or external Markdown.
-						Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
-						```
-						<section data-markdown>
-						  ## Markdown support
-						  Write content using inline or external Markdown.
-						  Instructions and more info available in the [readme](https://github.com/hakimel/reveal.js#markdown).
-						</section>
-						```
-					</script>
-</section>
-
+           <!-- separator -->
+            <section>
+               <h2>Topics</h2>
+               <p>
+               </p>
+               <ul>
+               <li>Factors</li>
+               <li>dplyr package</li>
+               <li>ggplot package</li>
+               </ul>
+              </section>
+           <!-- separator -->
+            <section>
+               <h2>Factors..</h2>
+               <p>
+               </p>
+               <ul>
+               <li>..represent categorical data</li>
+               <li>..are an important class for statistical analysis and plotting</li>
+               <li>..are stored integers with an associated label</li>
+               </ul>
+              </section>
+           <!-- separator -->
+            <section>
+               <h2><i>Challenge</i></h2>
+               <p>
+               </p>
+               You have a vector representing levels of exercise undertaken by 5 subjects<br>
+                    <pre><code class="R">
+                    “l”,”n”,”n”,”i”,”l” ; n=none, l=light, i=intense
+                    </code></pre>
+               What is the best way to represent this in R?<p></p>
+               <ol>
+                <li>) exercise <- c(“l”, “n”, “n”, “i”, “l”)</li>
+                <li>) exercise <- factor(c(“l”, “n”, “n”, “i”, “l”), ordered = TRUE)</li>
+                <li>) exercise < -factor(c(“l”, “n”, “n”, “i”, “l”), levels = c(“n”, “l”, “i”), ordered = FALSE)</li>
+                <li>) exercise <- factor(c(“l”, “n”, “n”, “i”, “l”), levels = c(“n”, “l”, “i”), ordered = TRUE)</li>
+                </ol>
+              </section>
+           <!-- separator -->
+            <section>
+               <h2>Summing up factors</h2>
+               <p>
+               </p>
+               <ul>
+               <li>order or unordered?</li>
+               <li>order of levels important for plotting</li>
+               <li>attention when converting !!</li>
+               <li>as.character() (results in character)</li>
+               <li>as.numeric( as.character() ) (results in numeric)</li>
+               </ul>
+              </section>
+           <!-- separator -->
+            <section>
+               <h2>dplyr grammar</h2>
+               <img src="dplyr_grammar.png" alt="dplyr grammar" height="580" width="1800" border="0"> 
+              </section>
+           <!-- separator -->
+            <section>
+               <h2><i>Challenge 1</i></h2>
+               <p>
+               </p>
+               <ul>
+               <li></li>
+               <li></li>
+               <li></li>
+               </ul>
+              </section>
+           <!-- separator -->
+            <section>
+               <h2><i>Challenge 2</i></h2>
+               <p>
+               </p>
+               <ul>
+               <li></li>
+               <li></li>
+               <li></li>
+               </ul>
+              </section>
+           <!-- separator -->
+            <section>
+               <h2>ggplot</h2>
+               <p>
+               </p>
+               <ul>
+               <li></li>
+               <li></li>
+               <li></li>
+               </ul>
+              </section>
+           <!-- separator -->
+            <section>
+               <h2><i>  </i></h2>
+               <p>
+               </p>
+               <ul>
+               <li></li>
+               <li></li>
+               <li></li>
+               </ul>
+              </section>
+           <!-- separator -->
 
 		</div>
 		</div>
