@@ -57,33 +57,46 @@ Suggestion: organize in a logical manner so that you know which file holds which
 
 ### Making your first R package
 
-Let's turn our XX functions into an R package.
+We'll be using custom slides for this lesson.
+
+* [PDF version](https://github.com/swc-bb/2017-05-17-r-workshop/raw/gh-pages/_episodes/SWC_packages_debugging_BM.pdf)
+* [Presentation version](https://github.com/swc-bb/2017-05-17-r-workshop/raw/gh-pages/_episodes/SWC_packages_debugging_BM_pres.pdf)
+* [Rnw source code](https://github.com/swc-bb/2017-05-17-r-workshop/blob/gh-pages/_episodes/SWC_packages_debugging_BM.Rnw)
+
+Let's start and turn our these functions into an R package.
 
 
 ~~~
-bb_unitHydrograph <- function(
-    n,
-    k,
-    t)
+# Nash-Sutclife Efficiency
+nse <- function(obs, sim)
 {
-if(length(n)>1 | length(k)>1) 42
-  stop("n and k can only have one single value!
-For vectorization, use sapply (see documentation examples).")
-t^(n-1) / k^n / gamma(n) * exp(-t/k)  # some say /k^(n-1) for the second term!
+if(!(is.vector(obs) & is.vector(sim))) stop("Input is not a vector.")
+if(length(obs) != length(sim)) stop("Vectors are not of equal length.")
+if(any(is.na(obs)|is.na(sim)))
+     {
+     Na <- which(is.na(obs)|is.na(sim))
+     warning(length(Na), " NAs were omitted from ", length(obs), " data points.")
+     obs <- obs[-Na] ; sim <- sim[-Na]
+     } # end if NA
+1 - ( sum((obs - sim)^2) / sum((obs - mean(obs))^2) )
 }
 ~~~
 {: .r}
 
 
 ~~~
-bb_superPos <- function(
-  P, # Precipitation
-  UH) # discrete UnitHydrograph
+# Root mean square error
+rmse <- function(a, b, quiet=FALSE)
 {
-added <- length(UH)-"1"
-qsim <- rep(0, length(P)+added )
-for(i in 1:length(P) ) qsim[i:(i+added)] <- P[i]*UH + qsim[i:(i+added)]
-qsim
+if(!(is.vector(a) & is.vector(b))) stop("input is not vectors")
+if(length(a) != length(b)) stop("vectors not of equal length")
+if(any(is.na(a)|is.na(b)))
+   {
+   Na <- which(is.na(a)|is.na(b))
+   if(!quiet) warning(length(Na), " NAs were omitted from ", length(a), " data points.")
+   a <- a[-Na] ; b <- b[-Na]
+   } # end if NA
+sqrt( sum((a-b)^2)/length(b) )
 }
 ~~~
 {: .r}
@@ -110,7 +123,7 @@ Keep the name simple and unique.
 
 ~~~
 setwd(parentDirectory)
-create("hydrograph")
+create("lsc")
 ~~~
 {: .r}
 
@@ -119,21 +132,47 @@ Place each function into a separate R script and add documentation like this:
 
 
 ~~~
-#' Convert Fahrenheit to Kelvin
+#' Nash-Sutcliffe efficiency
 #'
-#' This function converts input temperatures in Fahrenheit to Kelvin.
-#' @param temp The input temperature.
+#' Nash-Sutcliffe efficiency as a measure of goodness of fit.
+#' Removes incomplete observations with a warning.
+#'
+#' @param obs Numerical vector with observed values
+#' @param sim Simulated values (Numerical vector with the same length as \code{obs})
+#'
+#' @return Single numerical value
 #' @export
+#' @seealso \code{\link{rmse}}
+#' @references based on eval.NSeff  in RHydro Package
+#'             \url{https://r-forge.r-project.org/R/?group_id=411}
 #' @examples
-#' fahr_to_kelvin(32)
-
-fahr_to_kelvin <- function(temp) {
-  #Converts Fahrenheit to Kelvin
-  kelvin <- ((temp - 32) * (5/9)) + 273.15
-  kelvin
+#'
+#' set.seed(123)
+#' x <- rnorm(20)
+#' y <- 2*x + rnorm(20)
+#' plot(x,y)
+#' x[2:4] <- NA
+#'
+#' nse(x,y)
+#'
+nse <- function(obs, sim)
+{
+if(!(is.vector(obs) & is.vector(sim))) stop("Input is not a vector.")
+if(length(obs) != length(sim)) stop("Vectors are not of equal length.")
+if(any(is.na(obs)|is.na(sim)))
+     {
+     Na <- which(is.na(obs)|is.na(sim))
+     warning(length(Na), " NAs were omitted from ", length(obs), " data points.")
+     obs <- obs[-Na] ; sim <- sim[-Na]
+     } # end if NA
+1 - ( sum((obs - sim)^2) / sum((obs - mean(obs))^2) )
 }
 ~~~
 {: .r}
+
+For Rstudio: You can open the file, 
+put the cursor inside the function and press CTRL + ALT + SHIFT + R
+(or click on Code - Insert Roxygen Skeleton).
 
 The `roxygen2` package reads lines that begin with `#'` as comments to create the documentation for your package.
 Descriptive tags are preceded with the `@` symbol. For example, `@param` has information about the input parameters for the function.
@@ -141,7 +180,7 @@ Now, we will use `roxygen2` to convert our documentation to the standard R forma
 
 
 ~~~
-document("./toRpackage")
+document("./lsc")
 ~~~
 {: .r}
 
@@ -152,54 +191,59 @@ Now, let's load the package and take a look at the documentation.
 
 
 ~~~
-install("Rpack")
+install("lsc")
 
-?fahr_to_kelvin
+?nse
 ~~~
 {: .r}
 > ## Challenge 1
 >
-> Write a documentation for the function called `superPos`
+> Write a documentation for the function called `rmse`
 > and create the corresponding help files. Take a look at them if they
 > understandable
 >
 > > ## Solution to challenge 1
 > >
-> > Write a documentation for the function called `superPos`
+> > Write a documentation for the function called `rmse`
 > > and create the corresponding help files. Take a look at them if they
 > > understandable
 > >
 > > 
 > > ~~~
-> > #' Convert Fahrenheit to Kelvin
+> > #' Root Mean Square Error
+> > #' 
+> > #' RMSE as a measure of goodness of fit.
+> > #' Removes incomplete observations with a warning.
 > > #'
-> > #' This function converts input temperatures in Fahrenheit to Kelvin.
-> > #' @param temp The input temperature.
+> > #' @param a,b   Numerical vectors both of the same length
+> > #' @param quiet Logical: Suppress NA omission warning? DEFAULT: FALSE
+> > #'
+> > #' @return Single numerical value
 > > #' @export
+> > #' @seealso \code{\link{nse}}
 > > #' @examples
-> > #' fahr_to_kelvin(32)
-> > 
-> > fahr_to_kelvin <- function(temp) {
-> >   #Converts Fahrenheit to Kelvin
-> >   kelvin <- ((temp - 32) * (5/9)) + 273.15
-> >   kelvin
+> > #'
+> > #' set.seed(123)
+> > #' x <- rnorm(20)
+> > #' y <- 2*x + rnorm(20)
+> > #' plot(x,y)
+> > #' x[2:4] <- NA
+> > #' 
+> > #' rmse(x,y)
+> > #' 
+> > rmse <- function(a, b, quiet=FALSE)
+> > {
+> > if(!(is.vector(a) & is.vector(b))) stop("input is not vectors")
+> > if(length(a) != length(b)) stop("vectors not of equal length")
+> > if(any(is.na(a)|is.na(b)))
+> >    {
+> >    Na <- which(is.na(a)|is.na(b))
+> >    if(!quiet) warning(length(Na), " NAs were omitted from ", length(a), " data points.")
+> >    a <- a[-Na] ; b <- b[-Na]
+> >    } # end if NA
+> > sqrt( sum((a-b)^2)/length(b) )
 > > }
-> > 
-> > setwd("./tempConvert")
-> > ~~~
-> > {: .r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error in setwd("./tempConvert"): kann Arbeitsverzeichnis nicht wechseln
-> > ~~~
-> > {: .error}
-> > 
-> > 
-> > 
-> > ~~~
-> > document()
+> > document(./lsc)
 > > ~~~
 > > {: .r}
 > > 
@@ -213,8 +257,7 @@ install("Rpack")
 > > 
 > > 
 > > ~~~
-> > setwd("..")
-> > install("tempConvert")
+> > install("lsc")
 > > ~~~
 > > {: .r}
 > > 
@@ -228,21 +271,21 @@ install("Rpack")
 > > 
 > > 
 > > ~~~
-> > ?fahr_to_kelvin
+> > ?rmse
 > > ~~~
 > > {: .r}
 > > 
 > > 
 > > 
 > > ~~~
-> > No documentation for 'fahr_to_kelvin' in specified packages and libraries:
-> > you could try '??fahr_to_kelvin'
+> > No documentation for 'rmse' in specified packages and libraries:
+> > you could try '??rmse'
 > > ~~~
 > > {: .output}
 > {: .solution}
 {: .challenge}
 
-Notice there is now a tempConvert environment that is the parent environment to the global environment.
+Notice there is now a lcs environment that is the parent environment to the global environment.
 
 
 ~~~
@@ -254,44 +297,30 @@ Now that our package is loaded, let's try out some of the functions.
 
 
 ~~~
-fahr_to_celsius(32)
+nse(c(32,33),c(30,30))
 ~~~
 {: .r}
 
 
 
 ~~~
-Error in eval(expr, envir, enclos): konnte Funktion "fahr_to_celsius" nicht finden
+[1] -25
+~~~
+{: .output}
+
+
+
+~~~
+rmse(c(32,33,20,33))
+~~~
+{: .r}
+
+
+
+~~~
+Error in is.vector(b): Argument "b" fehlt (ohne Standardwert)
 ~~~
 {: .error}
-
-
-
-~~~
-fahr_to_kelvin(212)
-~~~
-{: .r}
-
-
-
-~~~
-[1] 373.15
-~~~
-{: .output}
-
-
-
-~~~
-kelvin_to_celsius(273.15)
-~~~
-{: .r}
-
-
-
-~~~
-[1] 0
-~~~
-{: .output}
 
 mention (and maybe link):
 
@@ -302,10 +331,48 @@ mention (and maybe link):
 
 ## Debugging
 
-here will be "theory" and the examples, once you (berry) tell me what we will do...
+[R. Peng (2002): Interactive Debugging Tools in R](http://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf)  
+[D. Murdoch (2010): Debugging in R](http://www.stats.uwo.ca/faculty/murdoch/software/debuggingR)  
+[H. Wickham (2015): Advanced R: debugging](http://adv-r.had.co.nz/Exceptions-Debugging.html)  
+[Example: Pete Werner Blog Post (2013)](https://www.r-bloggers.com/tracking-down-errors-in-r)
+
+When writing functions, errors (named bugs by nature-avoiding computer scientists) are bound to occur.
+Don't fret, it's normal and inevitable. 
+
+Once you learn how to debug functions, you'll get faster at fixing them.
+
+Modular programming is a very recommendable practice where each function has a specific task and its own documentation.
+This leads to functions calling functions calling functions, and unhelpful errors like
+
+~~~
+error in obscure_function: missing value where TRUE/FALSE needed
+~~~
+{: .r}
 
 
 
+~~~
+Error: <text>:1:7: Unerwartete(s) 'in'
+1: error in
+          ^
+~~~
+{: .error}
+To find out which function called which, `traceback()` is your best friend.
+Rstudio will quite often (but not always!) show it by default.
+
+
+When writing your own function, you can write `browser()` into it.
+Or click in the sidebar in Rstudio, making a red dot appear (works fine usually, but not always!).
+
+After sourcing the file with functions or reloading the package (CTRL+SHIFT+L), which redefines the function object in R, you can run the function again.
+It will now pause execution at the browser location and let you wander around inside the function environment.
+With `Q`, you exit the browsing environment, with `n` you go to the next line, with "f" finish the remainder of the function. 
+Other special commands in brwosing mode are `s`, `where` and `c` (see the links above).
+
+If you want this behaviour for every function (not just your own) for every error, set `options(error=recover)`.
+
+If you want `browser` for each line of a function, just set it into debugging mode with `debug(function)`. 
+Undo this after quitting the browser.
 
 > ## Challenge 2
 >
