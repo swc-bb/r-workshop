@@ -242,6 +242,16 @@ select certain observations (rows) or variables (columns), we often group the
 data by a certain variable(s), or we even calculate summary statistics. We can
 do these operations using the normal base R operations:
 
+Load the gapminder data first:
+
+
+~~~
+gapminder <- read.csv("data/gapminder-FiveYearData.csv", header=TRUE)
+~~~
+{: .r}
+
+Now use some standard R functions on it.
+
 
 ~~~
 mean(gapminder[gapminder$continent == "Africa", "gdpPercap"])
@@ -668,7 +678,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp))
 ~~~
 {: .r}
 
-<img src="../fig/rmd-08-unnamed-chunk-19-1.png" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-unnamed-chunk-20-1.png" title="plot of chunk unnamed-chunk-20" alt="plot of chunk unnamed-chunk-20" style="display: block; margin: auto;" />
 
 We need to tell `ggplot` how we want to visually represent the data, which we
 do by adding a new **geom** layer. In our example, we used `geom_point`, which
@@ -977,7 +987,7 @@ gapminder %>%
 ~~~
 {: .r}
 
-<img src="../fig/rmd-08-unnamed-chunk-21-1.png" title="plot of chunk unnamed-chunk-21" alt="plot of chunk unnamed-chunk-21" style="display: block; margin: auto;" />
+<img src="../fig/rmd-08-unnamed-chunk-22-1.png" title="plot of chunk unnamed-chunk-22" alt="plot of chunk unnamed-chunk-22" style="display: block; margin: auto;" />
 
 The `facet_wrap` layer took a "formula" as its argument, denoted by the tilde
 (~). This tells R to draw a panel for each unique value in the country column

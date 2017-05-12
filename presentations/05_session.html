@@ -22,15 +22,15 @@
                <h2>Topics</h2>
                <p>
                </p>
-               <ul>
+               <ol>
                <li>Factors</li>
                <li>dplyr package</li>
                <li>ggplot package</li>
-               </ul>
+               </ol>
               </section>
            <!-- separator -->
             <section>
-               <h2>Factors..</h2>
+               <h2>1. Factors..</h2>
                <p>
                </p>
                <ul>
@@ -45,16 +45,15 @@
                <p>
                </p>
                You have a vector representing levels of exercise undertaken by 5 subjects<br>
-                    <pre><code class="R">
-                    “l”,”n”,”n”,”i”,”l” ; n=none, l=light, i=intense
-                    </code></pre>
+               <i>'l','n','n','i','l' ; n=none, l=light, i=intense</i>
+               <p></p>
                What is the best way to represent this in R?<p></p>
-               <ol>
-                <li>) exercise <- c(“l”, “n”, “n”, “i”, “l”)</li>
-                <li>) exercise <- factor(c(“l”, “n”, “n”, “i”, “l”), ordered = TRUE)</li>
-                <li>) exercise < -factor(c(“l”, “n”, “n”, “i”, “l”), levels = c(“n”, “l”, “i”), ordered = FALSE)</li>
-                <li>) exercise <- factor(c(“l”, “n”, “n”, “i”, “l”), levels = c(“n”, “l”, “i”), ordered = TRUE)</li>
-                </ol>
+<pre><code class="R">
+1) exercise <- c('l', 'n', 'n', 'i', 'l')</li>
+2) exercise <- factor(c('l', 'n', 'n', 'i', 'l'), ordered = TRUE)</li>
+3) exercise < -factor(c('l', 'n', 'n', 'i', 'l'), levels = c('n', 'l', 'i'), ordered = FALSE)</li>
+4) exercise <- factor(c('l', 'n', 'n', 'i', 'l'), levels = c('n', 'l', 'i'), ordered = TRUE)</li>
+</code></pre>
               </section>
            <!-- separator -->
             <section>
@@ -71,55 +70,90 @@
               </section>
            <!-- separator -->
             <section>
-               <h2>dplyr grammar</h2>
+               <h2>2. dplyr grammar</h2>
                <img src="dplyr_grammar.png" alt="dplyr grammar" height="580" width="1800" border="0"> 
               </section>
            <!-- separator -->
             <section>
-               <h2><i>Challenge 1</i></h2>
+              <h2><i>Challenge 1</i></h2>
+              Write a single command (which can span multiple lines and includes pipes)
+              that will produce a dataframe that has the African values for <i>lifeExp</i>, <i>country</i> and <i>year</i>,
+              but not for other Continents.
+               <p>
+               </p>
+              How many rows does your dataframe have and why?
+              </section>
+           <!-- separator -->
+            <section>
+              <h2><i>Challenge 2</i></h2>
+              Calculate the average life expectancy per country.
+               <p>
+               </p>
+              Which has the longest average life expectancy and which has the shortest average life expectancy?
+              </section>
+           <!-- separator -->
+            <section>
+               <h2>3. ggplot</h2>
                <p>
                </p>
                <ul>
-               <li></li>
-               <li></li>
-               <li></li>
+               <li>Figure constructed of different layers</li>
+               <li>data, coordinate sytem, geoms</li>
+               <li>Possible to include transformations and statistics</li>
                </ul>
               </section>
            <!-- separator -->
             <section>
-               <h2><i>Challenge 2</i></h2>
+              <h2><i>Challenge 3</i></h2>
+Modify the example so that the figure shows how life expectancy has changed over time:
                <p>
                </p>
-               <ul>
-               <li></li>
-               <li></li>
-               <li></li>
-               </ul>
+<pre><code class="R">
+ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) + geom_point()
+</code></pre>
+Hint: the gapminder dataset has a column called “year”, which should appear on the x-axis.
               </section>
            <!-- separator -->
             <section>
-               <h2>ggplot</h2>
-               <p>
-               </p>
-               <ul>
-               <li></li>
-               <li></li>
-               <li></li>
-               </ul>
+              <h2><i>Challenge 4</i></h2>
+              In the previous examples and challenge we/’ve used the <i>aes</i> function to tell the scatterplot geom about the x and y locations of each point.
+              Another aesthetic property we can modify is the point color.
+              Modify the code from the previous challenge to color the points by the “continent” column.
+              <p></p>
+              What trends do you see in the data? Are they what you expected?
               </section>
            <!-- separator -->
             <section>
-               <h2><i>  </i></h2>
-               <p>
-               </p>
-               <ul>
-               <li></li>
-               <li></li>
-               <li></li>
-               </ul>
+              <h2><i>Challenge 5</i></h2>
+              Switch the order of the point and line layers from the previous example. What happened?
               </section>
            <!-- separator -->
-
+            <section>
+              <h2><i>Challenge 6a</i></h2>
+Modify the color and size of the points on the point layer in the previous example.
+<p></p>
+Hint: do not use the <i>aes</i> function.
+              </section>
+           <!-- separator -->
+            <section>
+              <h2><i>Challenge 6b</i></h2>
+              Modify your solution to Challenge 6a so that the points are now a different shape and are colored by continent with new trendlines.
+               <p>
+               </p>
+              Hint: The color argument can be used inside the aesthetic.
+              </section>
+           <!-- separator -->
+            <section>
+              <h2><i>Challenge 7</i></h2>
+Create a density plot of GDP per capita, filled by continent.
+               <p>
+               </p>
+Advanced:
+<ul>
+<li>Transform the x axis to better visualise the data spread.</li>
+<li>Add a facet layer to panel the density plots by year.</li>
+</ul>
+              </section>
 		</div>
 		</div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/headjs/1.0.3/head.min.js"></script>
