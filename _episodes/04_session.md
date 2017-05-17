@@ -18,19 +18,34 @@ keypoints:
 
 ## Create an R package
 
-Why should you make your own R packages?
+### Why should you make your own R packages?
 
-**Reproducible research!**
+There are many advantages, naming them here in an unordered list:
 
-An R package is the **basic unit of reusable code**.
-If you want to reuse code later or want others to be able to use your code, you should put it in a package.
+*   Collect your own functions in one place
+*   Combine functions and documentation in the right way
+*   Share code with others
+*   Make your research reproducible !
+
+If you then want to publish your package, there are two main ways: CRAN (which is the official R package service) and github (rather for testing and developer versions).
+Both have advantages and disadvantages. The process to publish in CRAN takes much more time but has also several quality checks build in within this procedure.
+At github everyone can just upload what he thinks is right, so one has to be careful.
+Its advantage is, that code can be shared quick and easily. If privacy (licensing) is an issue, please consider the fact, 
+that github is open to everyone. Alternatives could be bitbucket but there are many.
 
 An R package requires two components:
 
 *   a DESCRIPTION file with metadata about the package
 *   an R directory with the code
 
-*There are other optional components. Go [here][r-package-basics] for much more information.*
+Optional components are:
+*   documentation
+*   vignettes
+*   tests
+*   namespace
+*   data
+
+*Go [here][r-package-basics] for much more information.*
 
 [r-package-basics]: http://adv-r.had.co.nz/Package-basics.html
 
@@ -297,7 +312,7 @@ Now that our package is loaded, let's try out some of the functions.
 
 
 ~~~
-nse(c(32,33),c(30,30))
+nse(c(32,33), c(30,30))
 ~~~
 {: .r}
 
@@ -311,23 +326,16 @@ nse(c(32,33),c(30,30))
 
 
 ~~~
-rmse(c(32,33,20,33))
+rmse(c(32,33,20,33), c(31,32,19,32))
 ~~~
 {: .r}
 
 
 
 ~~~
-Error in is.vector(b): Argument "b" fehlt (ohne Standardwert)
+[1] 1
 ~~~
-{: .error}
-
-mention (and maybe link):
-
-* unit tests
-* CRAN and github?
-* Namespace and other minor details (like examples, testdata, vignette, etc.)
-
+{: .output}
 
 ## Debugging
 
@@ -348,15 +356,6 @@ This leads to functions calling functions calling functions, and unhelpful error
 error in obscure_function: missing value where TRUE/FALSE needed
 ~~~
 {: .r}
-
-
-
-~~~
-Error: <text>:1:7: Unerwartete(s) 'in'
-1: error in
-          ^
-~~~
-{: .error}
 To find out which function called which, `traceback()` is your best friend.
 Rstudio will quite often (but not always!) show it by default.
 
@@ -376,24 +375,24 @@ Undo this after quitting the browser.
 
 > ## Challenge 2
 >
-> Write a..
+> Load your package and correct the functions until
+> ```lsc(calib$P, calib$Q, area=1.6)``` returns the result below.
 >
 > > ## Solution to challenge 2
 > >
-> > Write a..
+> > Load your package and correct the functions until
+> > ```lsc(calib$P, calib$Q, area=1.6)``` returns the result below.
 > >
 > > 
 > > ~~~
-> > R = "code"
-> > a = c(1,2,3)
-> > mean(a)
+> > " here has to go the solution plz...!! "
 > > ~~~
 > > {: .r}
 > > 
 > > 
 > > 
 > > ~~~
-> > [1] 2
+> > [1] " here has to go the solution plz...!! "
 > > ~~~
 > > {: .output}
 > {: .solution}
