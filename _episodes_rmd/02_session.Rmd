@@ -137,7 +137,7 @@ fahr_to_kelvin(212)
 > >
 > > ```{r}
 > > kelvin_to_celsius <- function(temp) {
-> >   stopifnot(temp < 273,15, is.numeric(temp))
+> >   stopifnot(temp => 0, is.numeric(temp))
 > >   celsius <- temp - 273.15
 > >   return(celsius)
 > > }
