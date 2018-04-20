@@ -157,12 +157,22 @@ fahr_to_kelvin(212)
 > > 
 > > ~~~
 > > kelvin_to_celsius <- function(temp) {
-> >   stopifnot(temp < 273,15, is.numeric(temp))
+> >   stopifnot(temp => 0, is.numeric(temp))
 > >   celsius <- temp - 273.15
 > >   return(celsius)
 > > }
 > > ~~~
 > > {: .r}
+> > 
+> > 
+> > 
+> > ~~~
+> > Error: <text>:2:19: Unerwartete(s) '>'
+> > 1: kelvin_to_celsius <- function(temp) {
+> > 2:   stopifnot(temp =>
+> >                      ^
+> > ~~~
+> > {: .error}
 > {: .solution}
 {: .challenge}
 
