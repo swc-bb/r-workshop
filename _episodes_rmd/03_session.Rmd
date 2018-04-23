@@ -7,7 +7,7 @@ questions:
 objectives:
 - "Identify bottle necks using profiling"
 - "Code optimization"
-- "Parallelziation"
+- "Parallelization"
 keypoints:
 - "Be fast, not furious."
 source: Rmd
@@ -96,7 +96,7 @@ Yikes, that took long. How long exactly?
 > > ```
 > {: .solution}
 {: .challenge}
-So this took 18.2 s.
+So this took 14.2 s.
 (These times will vary and depend on your machine. I'll report my results here henceforward for illustration nevertheless.)
 
 We can do this slightly more elegant:    
@@ -168,29 +168,29 @@ Apparently, ```rbind()``` consumes most time, as it allocates a new data frame e
 > Do pre-allocation of ```cleaned_data``` and enter the valid data into it using a counter
 > > ## Solution to challenge 2
 > >
-> > ```{r ch2-sol}
-> > clean_data_2 <- function ()
-> >  {
-> >    cleaned_data <- much_data #pre-allocate: create an data frame with the same structure
-> >    valid_rows <- 0
-> >    
-> >    for (rr in 1:nrow(much_data))
-> >    {
-> >      valid_sample <- TRUE #initialise flag       
-> >      for (cc in 2:ncol(much_data))
-> >      {
-> >        if (much_data[rr, cc] > meas_thresh)
-> >          valid_sample <- FALSE
-> >      }
-> >      if (valid_sample)
-> >      {  
-> >        valid_rows <- valid_rows + 1 #increase counter
-> >        cleaned_data[valid_rows,] <- much_data[rr,]
-> >      }  
-> >    }
-> >    return(cleaned_data[1:valid_rows,])  
-> >  }
-> > ```
+ ```{r ch2-sol}
+ clean_data_2 <- function ()
+  {
+    cleaned_data <- much_data #pre-allocate: create an data frame with the same ucture
+    valid_rows <- 0
+    
+    for (rr in 1:nrow(much_data))
+    {
+      valid_sample <- TRUE #initialise flag       
+      for (cc in 2:ncol(much_data))
+      {
+        if (much_data[rr, cc] > meas_thresh)
+          valid_sample <- FALSE
+      }
+      if (valid_sample)
+      {  
+        valid_rows <- valid_rows + 1 #increase counter
+        cleaned_data[valid_rows,] <- much_data[rr,]
+      }  
+    }
+    return(cleaned_data[1:valid_rows,])  
+  }
+ ```
 > {: .solution}
 {: .challenge}
 
