@@ -104,6 +104,7 @@ pipes (`%>%`) to combine them.
 3. `group_by()`
 4. `summarize()`
 5. `mutate()`
+6. `join()`
 
 If you have have not installed this package earlier, please do so:
 
@@ -399,6 +400,22 @@ gdp_pop_bycontinents_byyear <- gapminder %>%
 ## Using joins
 INSERT: joins, creating a data frame from gapminder and shapefiles (continent !?)
 (marvin)
+
+~~~
+# load library for spatial data
+library(sf)
+
+# shape file location
+shp_file_countries = "/data/Countries/cntry00.shp"
+
+# read shapefile
+shp_countries = read_sf(shp_file_countries)
+
+# join gapminder and shapefile
+countries_joined = gapminder %>%
+  dplyr::inner_join(shp_countries, by = c("country" = "CNTRY_NAME"))
+~~~
+{: .r}
 
 ## Other great resources
 
