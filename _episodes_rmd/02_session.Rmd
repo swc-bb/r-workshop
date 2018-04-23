@@ -131,13 +131,13 @@ fahr_to_kelvin(212)
 > > ## Solution to challenge 2
 > >
 > > Write a function called `kelvin_to_celsius` that takes a temperature in Kelvin
-> > and returns that temperature in Celsius.In addtion, make sure that the function 
+> > and returns that temperature in Celsius. In addtion, make sure that the function 
 > > does not produce values smaller than the absolute freeezing point and that we 
 > > process only numbers (not strings).
 > >
 > > ```{r}
 > > kelvin_to_celsius <- function(temp) {
-> >   stopifnot(temp => 0, is.numeric(temp))
+> >   stopifnot(temp >= 0, is.numeric(temp))
 > >   celsius <- temp - 273.15
 > >   return(celsius)
 > > }
