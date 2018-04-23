@@ -15,7 +15,7 @@ Many people here use R but there is still a lack of "getting the bigger picture"
 The goal is therefore to broaden the horizon of what is possible and what is necessary, so every participant
 has the change to adapt their own coding research structure afterwards with all or parts of the content convered.
 
-Rendered version of the content: <https://swc-bb.github.io/2017-05-17-r-workshop>
+Rendered version of the content: <https://swc-bb.github.io/r-workshop>
 
 These sessions are mainly using the [Gapminder][gapminder] data.
 
