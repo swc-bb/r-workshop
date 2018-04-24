@@ -663,14 +663,17 @@ shp_file_countries = "/data/Countries/cntry00.shp"
 # read shapefile
 shp_countries = read_sf(shp_file_countries)
 
+
 # plot all data entries for 2002
 countries_joined = gapminder %>%
-  dplyr::inner_join(shp_countries, by = c("country" = "CNTRY_NAME")) %>%
+  dplyr::rename(CNTRY_NAME = country) %>%
+  dplyr::inner_join(shp_countries) %>%
   dplyr::filter(year == 2002)
 
 # plot only Europe for 2002
 countries_joined = gapminder %>%
-  dplyr::inner_join(shp_countries, by = c("country" = "CNTRY_NAME")) %>%
+  dplyr::rename(CNTRY_NAME = country) %>%
+  dplyr::inner_join(shp_countries) %>%
   dplyr::filter(year == 2002) %>%
   dplyr::filter(continent == "Europe")
 
@@ -694,8 +697,8 @@ shp_continents = read_sf(shp_file_continents)
 
 # join datasets
 df_joined_swc = gapminder %>%
-  dplyr::inner_join(shp_continents, by = c("continent" = "CONTINENT")) %>%
-  dplyr::filter(year ==2002) 
+  dplyr::rename(CONTINENT = continent) %>%
+  dplyr::right_join(shp_continents)
 
 # plot data: colour value
 ggplot(df_joined_swc) + geom_sf(aes(fill = lifeExp))
