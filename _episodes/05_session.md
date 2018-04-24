@@ -26,15 +26,12 @@ INSERT: convert from wide to long using
 
 # dplyr
 
-
-
 Manipulation of dataframes means many things to many researchers, we often
 select certain observations (rows) or variables (columns), we often group the
 data by a certain variable(s), or we even calculate summary statistics. We can
 do these operations using the normal base R operations:
 
 Load the gapminder data first:
-
 
 ~~~
 gapminder <- read.csv("data/gapminder-FiveYearData.csv", header=TRUE)
@@ -398,8 +395,14 @@ gdp_pop_bycontinents_byyear <- gapminder %>%
 {: .r}
 
 ## Using joins
-INSERT: joins, creating a data frame from gapminder and shapefiles (continent !?)
-(marvin)
+Joins are a powerful tool to combine different datasets.
+Data can be merged with different properties, depending on the data strucutre and individual needs.
+Dplyr supports `inner_join`, `left_join`, `right_join`, `full_join`, `anti_join` and
+some more types.
+They differ in the way which data columns are preserved and which are added.
+For the `inner_join`, which we will use below, both datasets are preserved,
+additional information from the joined dataset is added to the data.frame and
+missing rows are filled with `NA`.
 
 ~~~
 # load library for spatial data

@@ -483,15 +483,15 @@ x-axis.
 We can fit a simple relationship to the data by adding another layer,
 `geom_smooth`:
 
-
-~~~
-ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
-  geom_point() + scale_x_log10() + geom_smooth(method="lm")
-~~~
-{: .r}
-
-<img src="../fig/rmd-08-lm-fit-1.png" title="plot of chunk lm-fit" alt="plot of chunk lm-fit" style="display: block; margin: auto;" />
-
+<!--  -->
+<!-- ~~~ -->
+<!-- ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) + -->
+<!--   geom_point() + scale_x_log10() + geom_smooth(method="lm") -->
+<!-- ~~~ -->
+<!-- {: .r} -->
+<!--  -->
+<!-- <img src="../fig/rmd-08-lm-fit-1.png" title="plot of chunk lm-fit" alt="plot of chunk lm-fit" style="display: block; margin: auto;" /> -->
+<!--  -->
 We can make the line thicker by *setting* the **size** aesthetic in the
 `geom_smooth` layer:
 
@@ -579,17 +579,17 @@ names that start with the letter "A" or "Z".
 > `starts.with == "A" | starts.with == "Z"`)
 {: .callout}
 
-
-
-~~~
-starts.with <- substr(gapminder$country, start = 1, stop = 1)
-az.countries <- gapminder[starts.with %in% c("A", "Z"), ]
-ggplot(data = az.countries, aes(x = year, y = lifeExp, color=continent)) +
-  geom_line() + facet_wrap( ~ country)
-~~~
-{: .r}
-
-<img src="../fig/rmd-08-facet-1.png" title="plot of chunk facet" alt="plot of chunk facet" style="display: block; margin: auto;" />
+<!--  -->
+<!--  -->
+<!-- ~~~ -->
+<!-- starts.with <- substr(gapminder$country, start = 1, stop = 1) -->
+<!-- az.countries <- gapminder[starts.with %in% c("A", "Z"), ] -->
+<!-- ggplot(data = az.countries, aes(x = year, y = lifeExp, color=continent)) + -->
+<!--   geom_line() + facet_wrap( ~ country) -->
+<!-- ~~~ -->
+<!-- {: .r} -->
+<!--  -->
+<!-- <img src="../fig/rmd-08-facet-1.png" title="plot of chunk facet" alt="plot of chunk facet" style="display: block; margin: auto;" /> -->
 
 The `facet_wrap` layer took a "formula" as its argument, denoted by the tilde
 (~). This tells R to draw a panel for each unique value in the country column
@@ -608,6 +608,8 @@ for changing the axis labels. To change the legend title, we need to use the
 
 
 ~~~
+starts.with <- substr(gapminder$country, start = 1, stop = 1)
+az.countries <- gapminder[starts.with %in% c("A", "Z"), ]
 ggplot(data = az.countries, aes(x = year, y = lifeExp, color=continent)) +
   geom_line() + facet_wrap( ~ country) +
   xlab("Year") + ylab("Life expectancy") + ggtitle("Figure 1") +
@@ -617,17 +619,6 @@ ggplot(data = az.countries, aes(x = year, y = lifeExp, color=continent)) +
 {: .r}
 
 <img src="../fig/rmd-08-theme-1.png" title="plot of chunk theme" alt="plot of chunk theme" style="display: block; margin: auto;" />
-
-
-This is a taste of what you can do with `ggplot2`. RStudio provides a
-really useful [cheat sheet][cheat] of the different layers available, and more
-extensive documentation is available on the [ggplot2 website][ggplot-doc].
-Finally, if you have no idea how to change something, a quick Google search will
-usually send you to a relevant question and answer on Stack Overflow with reusable
-code to modify!
-
-[cheat]: http://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
-[ggplot-doc]: http://docs.ggplot2.org/current/
 
 
 > ## Challenge 5
@@ -658,7 +649,9 @@ code to modify!
 {: .challenge}
 
 ## Geospatial datasets
-???
+Different ways to visiualize data are specified by the `geom` used in the ggplot statement.
+Open community supports new and individual geoms, easily created and adapted.
+Here we will have a quick look, how we can use `geom_sf` to plot geospatial datasets.
 
 ~~~
 # load library for spatial data
@@ -709,4 +702,15 @@ ggplot(df_joined_swc) + geom_sf(aes(fill = lifeExp))
 
 ~~~
 {: .r}
+
+
+This is a taste of what you can do with `ggplot2`. RStudio provides a
+really useful [cheat sheet][cheat] of the different layers available, and more
+extensive documentation is available on the [ggplot2 website][ggplot-doc].
+Finally, if you have no idea how to change something, a quick Google search will
+usually send you to a relevant question and answer on Stack Overflow with reusable
+code to modify!
+
+[cheat]: http://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf
+[ggplot-doc]: http://docs.ggplot2.org/current/
 
