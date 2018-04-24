@@ -1,8 +1,6 @@
 # read the file with the functions we want to test
 source('./functions-lesson.R')
 
-context("Testing custom functions")
-
 # Test for custom_mean
 test_that('Testing the custom_mean function', {
   a = c(1, 2, 3)

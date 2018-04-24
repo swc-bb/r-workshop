@@ -17,7 +17,7 @@ fahr_to_kelvin <- function(temp) {
 kelvin_to_celsius <- function(temp_k) {
   if(!is.numeric(temp_k)){
     stop("Numeric input required")
-  }else{}
+  }else {}
   if (temp_k < 0) {
     stop("Can not process temperatures below absolute zero")
   }else {}
@@ -30,7 +30,7 @@ kelvin_to_celsius <- function(temp_k) {
 custom_mean <- function(data_vect){
   temp <- sum(data_vect) / length(data_vect)
   return(temp)
-
+}
 
 # -------------------------------------
 center <- function(data, desired) {

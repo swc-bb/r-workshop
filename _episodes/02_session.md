@@ -566,27 +566,12 @@ test_file('./functions/test-functions-lesson.R')
 
 ~~~
 ✔ | OK F W S | Context
-~~~
-{: .output}
-
-
-
-~~~
-Error in x[[method]](...): attempt to apply non-function
-~~~
-{: .error}
-
-
-
-~~~
-
+⠋ |  1       | 0⠙ |  2       | 0⠹ |  3       | 0⠸ |  4       | 0⠼ |  5       | 0⠴ |  6       | 0⠦ |  7       | 0
 ══ Results ════════════════════════════════════════════════════════════════
-OK:       0
-Failed:   2
+OK:       7
+Failed:   0
 Warnings: 0
 Skipped:  0
-
-No-one is perfect!
 ~~~
 {: .output}
 
@@ -601,25 +586,10 @@ test_dir('./functions')
 
 ~~~
 ✔ | OK F W S | Context
-~~~
-{: .output}
-
-
-
-~~~
-Error in x[[method]](...): attempt to apply non-function
-~~~
-{: .error}
-
-
-
-~~~
-
+⠋ |  1       | 0⠙ |  2       | 0⠹ |  3       | 0⠸ |  4       | 0⠼ |  5       | 0⠴ |  6       | 0⠦ |  7       | 0
 ══ Results ════════════════════════════════════════════════════════════════
-Duration: 0.1 s
-
-OK:       0
-Failed:   2
+OK:       7
+Failed:   0
 Warnings: 0
 Skipped:  0
 ~~~
