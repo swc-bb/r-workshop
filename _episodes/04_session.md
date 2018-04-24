@@ -265,7 +265,7 @@ install("lsc")
 > > 
 > > 
 > > ~~~
-> > Error in eval(expr, envir, enclos): konnte Funktion "document" nicht finden
+> > Error in document(./lsc): could not find function "document"
 > > ~~~
 > > {: .error}
 > > 
@@ -279,7 +279,7 @@ install("lsc")
 > > 
 > > 
 > > ~~~
-> > Error in eval(expr, envir, enclos): konnte Funktion "install" nicht finden
+> > Error in install("lsc"): could not find function "install"
 > > ~~~
 > > {: .error}
 > > 
