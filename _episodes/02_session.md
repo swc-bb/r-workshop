@@ -64,8 +64,8 @@ Let’s define a function fahr_to_kelvin that converts temperatures from Fahrenh
 
 
 ~~~
-fahr_to_kelvin <- function(temp) {
-  kelvin <- ((temp - 32) * (5 / 9)) + 273.15
+fahr_to_kelvin <- function(temp_f) {
+  kelvin <- ((temp_f - 32) * (5 / 9)) + 273.15
   return(kelvin)
 }
 ~~~
@@ -75,11 +75,11 @@ We define `fahr_to_kelvin` by assigning it to the output of `function`. The
 list of argument names are contained within parentheses.  Next, the
 [body]({{ page.root }}/reference/#function-body) of the function--the statements that are
 executed when it runs--is contained within curly braces (`{}`).  The statements
-in the body are indented by two spaces.  This makes the code easier to read but
+in the body are indented by two spaces. This makes the code easier to read but
 does not affect how the code operates.
 
 When we call the function, the values we pass to it as arguments are assigned to those
-variables so that we can use them inside the function.  Inside the function, we
+variables so that we can use them inside the function. Inside the function, we
 use a [return statement]({{ page.root }}/reference/#return-statement) to send a result back
 to whoever asked for it.
 
@@ -123,14 +123,11 @@ fahr_to_kelvin(212)
 >
 > > ## Solution to challenge 1
 > >
-> > Write a function called `kelvin_to_celsius` that takes a temperature in Kelvin
-> > and returns that temperature in Celsius
-> >
 > > 
 > > ~~~
-> > kelvin_to_celsius <- function(temp) {
-> >  celsius <- temp - 273.15
-> >  return(celsius)
+> > kelvin_to_celsius <- function(temp_k) {
+> >  temp_c<- temp_k - 273.15
+> >  return(temp_c)
 > > }
 > > ~~~
 > > {: .r}
@@ -144,37 +141,26 @@ fahr_to_kelvin(212)
 > does not produce values smaller than the absolute freeezing point and that we 
 > process only numbers (not strings or factors).
 >
-> Hint: To convert from Kelvin to Celsius you subtract 273.15 (the absolute
-> freezing point).
->
 > > ## Solution to challenge 2
-> >
-> > Write a function called `kelvin_to_celsius` that takes a temperature in Kelvin
-> > and returns that temperature in Celsius.In addtion, make sure that the function 
-> > does not produce values smaller than the absolute freeezing point and that we 
-> > process only numbers (not strings).
 > >
 > > 
 > > ~~~
-> > kelvin_to_celsius <- function(temp) {
-> >   stopifnot(temp => 0, is.numeric(temp))
-> >   celsius <- temp - 273.15
-> >   return(celsius)
+> > kelvin_to_celsius <- function(temp_k) {
+> >   if(!is.numeric(temp_k)){
+> >     stop("Numeric input required")
+> >   }else{}
+> >   if (temp_k < 0) {
+> >     stop("Can not process temperatures below absolute zero")
+> >   }else {}
+> >   #  
+> >   temp_c <- temp_k - 273.15
+> >   return(temp_c)
 > > }
 > > ~~~
 > > {: .r}
-> > 
-> > 
-> > 
-> > ~~~
-> > Error: <text>:2:19: Unerwartete(s) '>'
-> > 1: kelvin_to_celsius <- function(temp) {
-> > 2:   stopifnot(temp =>
-> >                      ^
-> > ~~~
-> > {: .error}
 > {: .solution}
 {: .challenge}
+
 
 ## Combining functions
 The real power of functions comes from mixing, matching and combining them
@@ -185,18 +171,24 @@ Kelvin, and Kelvin to Celsius:
 
 
 ~~~
-fahr_to_kelvin <- function(temp) {
-  kelvin <- ((temp - 32) * (5 / 9)) + 273.15
-  return(kelvin)
+fahr_to_kelvin <- function(temp_f) {
+  temp_k <- ((temp_f - 32) * (5 / 9)) + 273.15
+  return(temp_k)
 }
 
-kelvin_to_celsius <- function(temp) {
-  celsius <- temp - 273.15
-  return(celsius)
+kelvin_to_celsius <- function(temp_k) {
+  if(!is.numeric(temp_k)){
+    stop("Numeric input required")
+  }else{}
+  if (temp_k < 0) {
+    stop("Can not process temperatures below absolute zero")
+  }else {}
+  #  
+  temp_c <- temp_k - 273.15
+  return(temp_c)
 }
 ~~~
 {: .r}
-
 > ## Challenge 3
 >
 > Define the function to convert directly from Fahrenheit to Celsius,
@@ -211,10 +203,10 @@ kelvin_to_celsius <- function(temp) {
 > >
 > > 
 > > ~~~
-> > fahr_to_celsius <- function(temp) {
-> >   temp_k <- fahr_to_kelvin(temp)
-> >   result <- kelvin_to_celsius(temp_k)
-> >   return(result)
+> > fahr_to_celsius <- function(temp_f) {
+> >   temp_k <- fahr_to_kelvin(temp_f)
+> >   temp_c <- kelvin_to_celsius(temp_k)
+> >   return(temp_c)
 > > }
 > > ~~~
 > > {: .r}
@@ -382,130 +374,49 @@ center(z, 3)
 ~~~
 {: .output}
 
-That looks right, so let's try center on our real data. We'll center the
-inflammation data from day 4 around 0:
 
 
 ~~~
-dat <- read.csv(file = "data/inflammation-01.csv", header = FALSE)
-centered <- center(dat[, 4], 0)
-head(centered)
+z <- c(3, 3, 3, 3)
+z
 ~~~
 {: .r}
 
 
 
 ~~~
-[1]  1.25 -0.75  1.25 -1.75  1.25  0.25
+[1] 3 3 3 3
 ~~~
 {: .output}
 
-It's hard to tell from the default output whether the result is correct, but
-there are a few simple tests that will reassure us:
 
 
 ~~~
-# original min
-min(dat[, 4])
+center(z, -3)
 ~~~
 {: .r}
 
 
 
 ~~~
-[1] 0
+[1] -3 -3 -3 -3
 ~~~
 {: .output}
-
-
-
-~~~
-# centered min
-min(centered)
-~~~
-{: .r}
-
-
-
-~~~
-[1] -1.75
-~~~
-{: .output}
-
-
-
-~~~
-# original mean
-mean(dat[, 4])
-~~~
-{: .r}
-
-
-
-~~~
-[1] 1.75
-~~~
-{: .output}
-
-
-
-~~~
-# centered mean
-mean(centered)
-~~~
-{: .r}
-
-
-
-~~~
-[1] 0
-~~~
-{: .output}
-
-
-
-~~~
-# original max
-max(dat[, 4])
-~~~
-{: .r}
-
-
-
-~~~
-[1] 3
-~~~
-{: .output}
-
-
-
-~~~
-# centered max
-max(centered)
-~~~
-{: .r}
-
-
-
-~~~
-[1] 1.25
-~~~
-{: .output}
-
-That seems almost right: the original mean was about 1.75, so the lower bound from zero is now about -1.75.
-The mean of the centered data is 0. Other testing options could be.
+As we substract a constant from each eleemt of the vector, the standard
+deviation does not change as we apply our `center` function. Another option to
+test our function.
 
 
 ~~~
 # original standard deviation
-sd(dat[, 4])
+sd(z)
 ~~~
 {: .r}
 
 
 
 ~~~
-[1] 1.067628
+[1] 0
 ~~~
 {: .output}
 
@@ -513,14 +424,14 @@ sd(dat[, 4])
 
 ~~~
 # centered standard deviation
-sd(centered)
+sd(center(z, 4))
 ~~~
 {: .r}
 
 
 
 ~~~
-[1] 1.067628
+[1] 0
 ~~~
 {: .output}
 
@@ -565,7 +476,7 @@ objects. Putting our last interactive test into an expectations.
 
 
 ~~~
-expect_equal(sd(centered), sd(dat[, 4]))
+expect_equal(sd(center(z, 33)), sd(z))
 ~~~
 {: .r}
 
@@ -612,7 +523,7 @@ test_that('Testing the custom_mean function', {
 > {: .solution}
 {: .challenge}
 
-The __testthat__ package provide as set of functions to run test as convenient
+The __testthat__ package provides as set of functions to run test as convenient
 as possible. We will see two examples, namely the `test_file()` and `test_dir()`
 functions. The `test_file()` function will run the specified source file. The
 functionality is similar to the `source` function, but the output is more
@@ -654,8 +565,28 @@ test_file('./functions/test-functions-lesson.R')
 
 
 ~~~
-...
-DONE ======================================================================
+✔ | OK F W S | Context
+~~~
+{: .output}
+
+
+
+~~~
+Error in x[[method]](...): attempt to apply non-function
+~~~
+{: .error}
+
+
+
+~~~
+
+══ Results ════════════════════════════════════════════════════════════════
+OK:       0
+Failed:   2
+Warnings: 0
+Skipped:  0
+
+No-one is perfect!
 ~~~
 {: .output}
 
@@ -669,8 +600,28 @@ test_dir('./functions')
 
 
 ~~~
-...
-DONE ======================================================================
+✔ | OK F W S | Context
+~~~
+{: .output}
+
+
+
+~~~
+Error in x[[method]](...): attempt to apply non-function
+~~~
+{: .error}
+
+
+
+~~~
+
+══ Results ════════════════════════════════════════════════════════════════
+Duration: 0.1 s
+
+OK:       0
+Failed:   2
+Warnings: 0
+Skipped:  0
 ~~~
 {: .output}
 > ## Challenge 5
@@ -679,9 +630,6 @@ DONE ======================================================================
 > does the results look like and what does it tell us.
 >
 > > ## Solution to challenge 5
-> >
-> > Extent the file 'test-functions-lesson.R' by writing a test that fails. How
-> > does the results look like and what does it tell us.
 > >
 > > 
 > > ~~~
@@ -709,6 +657,52 @@ DONE ======================================================================
 > > [4] 3 - 2 == 1
 > > ~~~
 > > {: .error}
+> {: .solution}
+{: .challenge}
+
+> ## Challenge 6
+>
+> Think about other options that are worth testing with regard to the functions
+> we used during this leesson.
+>
+> > ## Solution to challenge 6
+> > 
+> > Examples: 
+> > * test the return type of your function
+> > * test for a certain error message
+> > * test object dimensions of your return type
+> > 
+> > ```
+> {: .solution}
+{: .challenge}
+
+The `auto_test` function constantly runs yours tests whenever the code of your
+functions or the code of your tests was written to disk. So once started, you
+"only" switch between your `functions.R` and your `test.R` file (or
+whatever name you chose). Put a line `context("any kind of string here")` at the
+beginging of your test-file (see [here](https://github.com/r-lib/testthat/issues/700)).
+
+> ## Challenge 7
+>
+> Use the `auto_test` function to implement one of the discussed test. 
+>
+> > ## Solution to challenge 7
+> >
+> > 
+> > ~~~
+> > test_that('Testing the kelvin_to_celsius error message', {
+> >  # aboslut zero
+> >  expect_equal(kelvin_to_celsius(temp_k = 273.15), 0)
+> >  # testing whether an error is given in case we use character
+> >  expect_error(kelvin_to_celsius("a"), "Numeric input required")
+> >  # testing whether an error is given in case we use temp below absolute zero
+> >  expect_error(kelvin_to_celsius(temp_k = -10), 
+> >               "Can not process temperatures below absolute zero")
+> >  expect_error(kelvin_to_celsius(temp_k = -0.0001), 
+> >               "Can not process temperatures below absolute zero")
+> > })
+> > ~~~
+> > {: .r}
 > {: .solution}
 {: .challenge}
 
@@ -769,7 +763,7 @@ dat <- read.csv(FALSE, "data/inflammation-01.csv")
 
 
 ~~~
-Error in read.table(file = file, header = header, sep = sep, quote = quote, : 'file' muss eine Zeichenkette oder eine Verbindung sein
+Error in read.table(file = file, header = header, sep = sep, quote = quote, : 'file' must be a character string or connection
 ~~~
 {: .error}
 
@@ -854,7 +848,8 @@ The example below shows how R matches values to arguments
 ~~~
 display <- function(a = 1, b = 2, c = 3) {
   result <- c(a, b, c)
-  names(result) <- c("a", "b", "c")  # This names each element of the vector
+  # This names each element of the vector
+  names(result) <- c("a", "b", "c")
   return(result)
 }
 
@@ -982,32 +977,9 @@ dat <- read.csv(FALSE, "data/inflammation-01.csv")
 
 
 ~~~
-Error in read.table(file = file, header = header, sep = sep, quote = quote, : 'file' muss eine Zeichenkette oder eine Verbindung sein
+Error in read.table(file = file, header = header, sep = sep, quote = quote, : 'file' must be a character string or connection
 ~~~
 {: .error}
 
 It fails because `FALSE` is assigned to `file` and the filename is assigned to
 the argument `header`.
-
-> ## A Function with Default Argument Values
->
-> Rewrite the `rescale` function so that it scales a vector to lie between 0
-> and 1 by default, but will allow the caller to specify lower and upper bounds
-> if they want.  Compare your implementation to your neighbor's: do the two
-> functions always behave the same way?
->
-> > ## Solution
-> > ~~~
-> > rescale <- function(v, lower = 0, upper = 1) {
-> >   # Rescales a vector, v, to lie in the range lower to upper.
-> >   L <- min(v)
-> >   H <- max(v)
-> >   result <- (v - L) / (H - L) * (upper - lower) + lower
-> >   return(result)
-> > }
-> > ~~~
-> > {: .r}
-> {: .solution}
-{: .challenge}
-
-

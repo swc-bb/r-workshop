@@ -27,7 +27,7 @@ Here's some function to create some synthetic data for testing:
 #function to randomly create some data table 
   create_data <- function(rows2create) {
     #create a table with [rows2create] samples, each sample has been measured 10 times
-    set.seed(1) #initialize random generator for reproducable randomness  
+    set.seed(1) #initialize random generator for reproducible randomness  
     much_data <- data.frame(cbind(
                         sampleID = paste0("sample",1:rows2create),
                            data.frame(matrix(runif(rows2create*10), nrow = rows2create))
@@ -49,7 +49,7 @@ summary(much_data)
 meas_thresh <- 0.8 #rows with any value higher than this shall be discarded
 ```
 
-A very naive and straigforward way to address the task is going through the data row-by-row and checking each column against the threshold:
+A very naive and straightforward way to address the task is going through the data row-by-row and checking each column against the threshold:
 
 ```{r, eval = FALSE}
 #first attempt: naive nested loop
@@ -110,7 +110,7 @@ elapsed: total time elapsed
 
 ###Profiling
 So what takes so much time? Like in a thriller, the villain may be found with the help of a profiler.
-Here, a profiler gives us detailed information on the required system ressources (CPU and RAM).
+Here, a profiler gives us detailed information on the required system resources (CPU and RAM).
 Let's do some "profiling"...
 ```{r, eval = FALSE}
   Rprof("prof.out") #start a profiling session and put the output to a file "prof.out"
@@ -124,7 +124,7 @@ by.total: time spent in function and callees.
 sample.interval: the sampling interval, by default every 20 msecs.
 sampling.time: total time of profiling run. Remember that profiling does impose a small performance penalty.
   
-We can spice this up using some gaphics:
+We can spice this up using some graphics:
 ```{r, eval = FALSE}
 # graphical profiling with profvis (also implemented in RStudio GUI)  
   if (!require(profvis))
@@ -171,7 +171,7 @@ Apparently, ```rbind()``` consumes most time, as it allocates a new data frame e
  ```{r ch2-sol}
  clean_data_2 <- function ()
   {
-    cleaned_data <- much_data #pre-allocate: create an data frame with the same ucture
+    cleaned_data <- much_data #pre-allocate: create an data frame with the same structure
     valid_rows <- 0
     
     for (rr in 1:nrow(much_data))
@@ -205,7 +205,7 @@ Rprof("prof.out") #start a profiling session and put the output to "prof.out"
 ```  
 10.8 s. Well done, runtime significantly reduced.
 
-> ## Tip: Pre-allocating memory is generelly a good idea.
+> ## Tip: Pre-allocating memory is generally a good idea.
 {: .callout}
 
 The output suggests, that the dataframe operations consume much time. While dataframes and lists are convenient, computations on them are slower than on ordinary matrices.
@@ -371,7 +371,7 @@ Rprof("prof.out") #start a profiling session and put the output to "prof.out"
 
 Can we beat that?
 
-Let's be ambitous and increase the size of the data even more by factor 5.
+Let's be ambitious and increase the size of the data even more by factor 5.
 Remember: by now we are dealing with 50 times the amount of data we started with!
 ```{r, eval = FALSE}  
    much_data <- create_data(rows2create = rows_in_testdata*10*5) #create table with 20*10*5 k rows
@@ -465,7 +465,7 @@ The array size must be passed as a separate parameters (no dynamic array size, s
                  mm       = as.double(1) 
                  )
   str(out) #the result is returned as a list, also containing all given arguments
-  out$mm == max(testvector)  #the result is the same as from the internal funcion
+  out$mm == max(testvector)  #the result is the same as from the internal function
 ```  
 Now for the real stuff: let's use ```clean_data_7```, which addresses our actual task: 
 
@@ -523,7 +523,7 @@ So, how does this perform?
 *** Parallelization: Divide et impera. 
 
 R does not use multiple cores per se. However, a variety of approaches exist that allow parallelization.
-They differ significantly in portability, ease-of-use and flexibility. Many comprise a front end (for controling the tasks) and a back end (sometime platform-specific).
+They differ significantly in portability, ease-of-use and flexibility. Many comprise a front end (for controlling the tasks) and a back end (sometime platform-specific).
 ```foreach()``` is a very flexible front end:
 
 ```{r, eval = FALSE}  
@@ -661,7 +661,7 @@ What else can we do for speed-up?
 - if you have to access files, do it
  - in large chunks
  - in single files
- - preferrably in binary ( ```save()``` ) opposed to text files (```read.table()``` )
+ - preferably in binary ( ```save()``` ) opposed to text files (```read.table()``` )
   
 
 *** Summary

@@ -652,7 +652,7 @@ function (name, pos = -1L, envir = as.environment(pos), all.names = FALSE,
     }
     else all.names
 }
-<bytecode: 0x30a0020>
+<bytecode: 0x2951a98>
 <environment: namespace:base>
 ~~~
 {: .output}
@@ -692,7 +692,7 @@ rm(list <- ls())
 
 
 ~~~
-Error in rm(list <- ls()): ... muss Namen oder Zeichenketten enthalten
+Error in rm(list <- ls()): ... must contain names or character strings
 ~~~
 {: .error}
 
