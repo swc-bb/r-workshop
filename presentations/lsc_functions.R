@@ -210,7 +210,8 @@ if(plot)
   title(main=main)
   axis(2, pretty(P), col=4, las=1, col.axis=4)
   #
-  par(new=TRUE); plot(x, Q, type=type[1], col=2, las=1, ylim=range(Q)*c(1,2), ann=FALSE, axes=FALSE)
+  par(new=TRUE)
+  plot(x, Q, type=type[1], col=2, ylim=range(Q)*c(1,2), las=1, ann=FALSE, axes=FALSE)
   axis(4, pretty(Q), col=2, las=1, col.axis=2)
   #
   mtext("P [mm]", line=-2, col=4, adj=0.02, outer=TRUE)
