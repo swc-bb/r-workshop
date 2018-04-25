@@ -9,7 +9,7 @@ objectives:
 - "To be able to use the seven main dataframe manipulation 'verbs' with pipes in  `dplyr`."
 keypoints:
 - "Use the `dplyr` package to manipulate dataframes."
-- "Use `cast()` to a dataframe from wide to long."
+- "Use `gather()` to format a dataframe from wide to long."
 - "Use `select()` to choose variables from a dataframe."
 - "Use `filter()` to choose data based on values."
 - "Use `group_by()` and `summarize()` to work with subsets of data."
@@ -20,8 +20,51 @@ source: Rmd
 
 # Convert wide to long format
 INSERT: convert from wide to long using
-`cast()`
-(stefan)
+`gather()`
+
+
+~~~
+library(tidyverse)
+
+# Make a data frame in wide format, gdp per country
+df_wide = data.frame(date = c(as.Date("2001-01-01"), as.Date("2001-01-02")),
+                     austria = c(100, 200),
+                     sweden = c(300, 400))
+
+# Imagine adding another variable, that you want to compare with the gdp later
+# If we strictly stick to the wide format, that may look like that.
+
+df_wide = data.frame(date = c(as.Date("2001-01-01"), as.Date("2001-01-02")),
+                     austria_gdp = c(100, 200),
+                     austria_lifeexp = c(81, 82),
+                     sweden_gdp = c(300, 400),
+                     sweden_lifeexp = c(83, 84))
+
+# How do you continue to work with that kind of data, if you are ask to compute
+# summary stats for each country and variable.
+# * using indices 
+# * using regular expressions to find toe correct columns
+# * ... 
+
+# What if a colleague has a similar question and thinks very similar, but only
+# similar :-)
+
+df_wide = data.frame(date = c(as.Date("2001-01-01"), as.Date("2001-01-02")),
+                     gdp_austria = c(100, 200),
+                     gdp_sweden = c(300, 400),
+                     lifeexp_austria = c(81, 82),
+                     lifeexp_sweden = c(83, 84))
+
+# How does the index approach work ... ? Not at all!
+# The solution: long format instead of the wide format.
+
+df_long = gather(df_wide, variable_mix, value, -date)
+
+# This is first half of the cake:
+
+df_long = separate(df_long, variable_mix, c("variable", "country"), sep = "_")
+~~~
+{: .r}
 
 
 # dplyr
