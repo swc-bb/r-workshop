@@ -25,9 +25,9 @@ Here's some function to create some synthetic data for testing:
 
 
 ```r
-#function to randomly create some data table 
+#function to randomly create some data table with the specified number of rows
   create_data <- function(rows2create) {
-    #create a table with [rows2create] samples, each sample has been measured 10 times
+    #create a table with [rows2create] samples, each sample has been measured 10 times (= 10 rows)
     set.seed(1) #initialize random generator for reproducible randomness  
     much_data <- data.frame(cbind(
                         sampleID = paste0("sample",1:rows2create),
@@ -38,12 +38,12 @@ Here's some function to create some synthetic data for testing:
   }
 ```
 
-OK, now use this function to create some 20000 rows of data:
+OK, now use this function to create some 20,000 rows of data:
 
 
 ```r
 rows_in_testdata <- 20000
-much_data <- create_data(rows2create = rows_in_testdata) #create table with 20 k rows
+much_data <- create_data(rows2create = rows_in_testdata) #create table with 20,000 rows
 
 summary(much_data)
 
@@ -60,14 +60,14 @@ A very naive and straightforward way to address the task is going through the da
     cleaned_data<-data.frame()
     for (rr in 1:nrow(much_data))
     {
-      valid_sample <- TRUE #initialise flag       
+      valid_sample <- TRUE #initialise flag indicating if this is a valid row      
       for (cc in 2:ncol(much_data))
       {
         if (much_data[rr, cc] > meas_thresh)
           valid_sample <- FALSE
       }
       if (valid_sample)
-        cleaned_data <- rbind(cleaned_data, much_data[rr,])
+        cleaned_data <- rbind(cleaned_data, much_data[rr,])  #assemble all rows that have passed the test
     }
     return(cleaned_data)  
   }
@@ -116,7 +116,7 @@ elapsed: total time elapsed
 ###Profiling
 So what takes so much time? Like in a thriller, the villain may be found with the help of a profiler.
 Here, a profiler gives us detailed information on the required system resources (CPU and RAM).
-Let's do some "profiling"...
+Let's do some "profiling" for required CPU-time...
 
 ```r
   Rprof("prof.out") #start a profiling session and put the output to a file "prof.out"
@@ -126,7 +126,7 @@ Let's do some "profiling"...
 ```
 The output means:
 by.self: time spent in function alone.
-by.total: time spent in function and callees.
+by.total: time spent in function and its sub-functions.
 sample.interval: the sampling interval, by default every 20 msecs.
 sampling.time: total time of profiling run. Remember that profiling does impose a small performance penalty.
   
@@ -173,7 +173,7 @@ Apparently, ```rbind()``` consumes most time, as it allocates a new data frame e
 
 > ## Challenge 2
 >
-> Do pre-allocation of ```cleaned_data``` and enter the valid data into it using a counter
+> Do pre-allocation of ```cleaned_data``` (i.e. create the dataframe beforehand) and enter the valid data into it using a counter.
 > > ## Solution to challenge 2
 > >
  
@@ -194,10 +194,10 @@ Apparently, ```rbind()``` consumes most time, as it allocates a new data frame e
       if (valid_sample)
       {  
         valid_rows <- valid_rows + 1 #increase counter
-        cleaned_data[valid_rows,] <- much_data[rr,]
+        cleaned_data[valid_rows,] <- much_data[rr,]  #insert the verified row at the designated location
       }  
     }
-    return(cleaned_data[1:valid_rows,])  
+    return(cleaned_data[1:valid_rows,])   #return all row assembled so far
   }
  ```
 > {: .solution}
@@ -206,11 +206,11 @@ Apparently, ```rbind()``` consumes most time, as it allocates a new data frame e
 Let's check if that helped:
 
 ```r
-Rprof("prof.out") #start a profiling session and put the output to "prof.out"
+  Rprof("prof.out") #start a profiling session and put the output to "prof.out"
   cleaned_data2 <- clean_data_2()
   Rprof(NULL) #stop the profiling session
   summaryRprof(filename = "prof.out")
-  range(cleaned_data1[,-1] - cleaned_data2[,-1]) #check the result is still the same
+  range(cleaned_data1[,-1] - cleaned_data2[,-1]) #simple check if the result is still the same
   rm(cleaned_data1) #remove the old result, we don't want to clutter all our workspace
 ```
 10.8 s. Well done, runtime significantly reduced.
@@ -222,7 +222,7 @@ The output suggests, that the dataframe operations consume much time. While data
 
 > ## Challenge 3
 >
-> In the function, convert the dataframe to matrix and work with the matrix only (let's discard the first column).
+> In the function, convert the dataframe to matrix (```as.matrix()```) and work with the matrix only (let's simply discard the first column).
 >
 > > ## Solution to challenge 3
 > >
@@ -245,7 +245,7 @@ The output suggests, that the dataframe operations consume much time. While data
 > >      if (valid_sample)
 > >      {  
 > >        valid_rows <- valid_rows + 1 #increase counter
-> >        cleaned_data[valid_rows,] <- much_data_matrix[rr,]
+> >        cleaned_data[valid_rows,] <- much_data_matrix[rr,] #insert the verified row at the designated location
 > >      }  
 > >    }
 > >    return(cleaned_data[1:valid_rows,])  
@@ -262,10 +262,10 @@ Check it out:
   Rprof(NULL) #stop the profiling session
   summaryRprof(filename = "prof.out")
 
-  range(cleaned_data2[,-1] - cleaned_data3) #check the result is still the same
+  range(cleaned_data2[,-1] - cleaned_data3) #check if the result is still the same
   rm(cleaned_data2) #remove the old result
 ```
-0.35 s! Wow, that is some speed-up! Though, admittedly, we sacrificed the first column containing the string 
+0.35 s! Wow, now that is some speed-up! Though, admittedly, we sacrificed the first column containing the string containing the IDs. 
 > ## Tip: avoid complex data structures, especially when containing different datatypes (strings, numbers, factors, ...)
 {: .callout}
 
@@ -285,7 +285,7 @@ The comparison and the repeated determination of the number of columns still tak
 
 > ## Challenge 4
 >
-> Shortcut comparisons, put static computations (```nrow()```) outside loop!
+> Shortcut comparisons (compare only until the first value is exceeded), put static computations (```nrow()```) outside loop!
 >
 > > ##  Challenge 4
 > >
@@ -312,7 +312,7 @@ The comparison and the repeated determination of the number of columns still tak
 > >      if (valid_sample)
 > >      {  
 > >        valid_rows <- valid_rows + 1 #increase counter
-> >        cleaned_data[valid_rows,] <- much_data_matrix[rr,]
+> >        cleaned_data[valid_rows,] <- much_data_matrix[rr,] #insert the verified row at the designated location
 > >      }  
 > >    }
 > >    return(cleaned_data[1:valid_rows,])  
@@ -329,7 +329,7 @@ Now have a go:
   Rprof(NULL) #stop the profiling session
   summaryRprof(filename = "prof.out")
 
-  range(cleaned_data3 - cleaned_data4) #check the result is still the same
+  range(cleaned_data3 - cleaned_data4) #check if the result is still the same
   rm(cleaned_data3) #remove the old result
 ```
 1.8 s. Again, runtime reduced by roughly one third.
@@ -338,12 +338,12 @@ Now have a go:
 {: .callout}
 
 
-The comparison still takes some time.
+The comparisons still takes ome time.
 
 > ## Challenge 5
 >
 > Don't criticize it, vectorize it: The vectorisation of the inner loop
-> Instead of using the loop, compare an entire row to threshold and use ```any()```   
+> Instead of using the loop, compare an entire row to the threshold and use ```any()``` and its negation  
 > > ##  Challenge 5
 > >
 > > 
@@ -378,7 +378,7 @@ Rprof("prof.out") #start a profiling session and put the output to "prof.out"
   Rprof(NULL) #stop the profiling session
   summaryRprof(filename = "prof.out")
 
-  range(cleaned_data4 - cleaned_data5) #check the result is still the same
+  range(cleaned_data4 - cleaned_data5) #check if the result is still the same
   rm(cleaned_data4) #remove the old result
 ```
 0.95 s! Runtime cut in half again! 
@@ -386,7 +386,7 @@ Rprof("prof.out") #start a profiling session and put the output to "prof.out"
 {: .callout}
 
 
-Can we beat that?
+Can we top that?
 
 Let's be ambitious and increase the size of the data even more by factor 5.
 Remember: by now we are dealing with 50 times the amount of data we started with!
@@ -405,7 +405,7 @@ So, vectorisation proved very effective.
 
 > ## Challenge 6
 >
-> Vectorize the outer loop using ```apply()``` and an internal function that evaluates the validity of an entire row
+> Vectorize the outer loop using ```apply()``` and create a function ```validate_row()``` that evaluates the validity of an entire row
 > > ##  Challenge 6
 > >
 > > 
@@ -446,7 +446,7 @@ Rprof("prof.out") #start a profiling session and put the output to "prof.out"
 
 
 With 50 times the data we reduced runtime from 18.9 to 2.4 s
-This is 390-fold speedup!
+This is 390-fold speed-up!
 
 What else can we do?
 DLL (Dynamically linked libraries): Let someone else do the work!
@@ -467,22 +467,22 @@ alternatively, let ```R``` handle the job:
   ```R CMD SHLIB external_library.f90```
 (on Windows, this requires ```RTools``` to be installed)
 
-Now, let's first just try "maxi", an external realization of the max() function:
+Now, let's first just try "maxi", an external realization of the ```max()``` function:
 
 
 ```r
-dyn.load("external_library.dll") #load the external library
+  dyn.load("external_library.dll") #load the external library
   if (!is.loaded("maxi")) stop("Couldn't load DLL or find function") else  #check if has been loaded correctly and the function we want is part of it
     print("DLL loaded, function found")
 ```
 The external function must be called with precisely the same syntax.
-The data types of R and compiler code must match exactly.
+The data types of R and compiler code must match exactly (use e.g. ```as.double()```).
 The array size must be passed as a separate parameters (no dynamic array size, sorry).
 
 ```r
   testvector <- runif(10)
   out <- .Fortran("maxi", 
-                 vect     = as.double(testvector ), 
+                 vect     = as.double(testvector ),   #"as.double()" is used for ensure compatibility between R and Fortran
                  vectlen  = as.integer(length(testvector)), 
                  mm       = as.double(1) 
                  )
@@ -497,8 +497,8 @@ if (!is.loaded("clean_data_7")) stop("Couldn't load DLL or find function") else 
     print("DLL loaded, function found")
 ```
 
-Unfortunately, the external function cannot return the already cleaned matrix, because dynamically sizing the the return value is not possible (afaik).
-We have to do the actual selection of the valid rows in R.
+Unfortunately, the external function cannot return the already cleaned matrix, because dynamically sizing the return value is not possible (afaik). So let the 
+external function just identify the valid rows, we will do the actual selection in R.
 
 > ## Challenge 7
 >
@@ -545,7 +545,7 @@ So, how does this perform?
 
 *** Parallelization: Divide et impera. 
 
-R does not use multiple cores per se. However, a variety of approaches exist that allow parallelization.
+R does not use multiple CPUs or cores per se. However, a variety of approaches exist that allow parallelization.
 They differ significantly in portability, ease-of-use and flexibility. Many comprise a front end (for controlling the tasks) and a back end (sometime platform-specific).
 ```foreach()``` is a very flexible front end:
 
@@ -689,11 +689,12 @@ What else can we do for speed-up?
 - check compiling functions, package ```Rcpp```
 - keep an eye on memory use (or do memory profiling): 
  large memory requirements (e.g. by parallelization!) may require swapping RAM to hard disk, which is painfully slow
+- prefer referencing by index over referencing by names: use ```data[1,1]``` instead of ```data["first_row","id"]```
 - avoid file operations
 - if you have to access files, do it
  - in large chunks
- - in single files
- - preferably in binary ( ```save()``` ) opposed to text files (```read.table()``` )
+ - one files at a time (instead of reading from multiple files simultaneously)
+ - preferably in binary files ( ```save()```, ```readBin()``` ) opposed to text files (```read.table()``` )
   
 
 *** Summary

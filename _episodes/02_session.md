@@ -228,6 +228,189 @@ kelvin_to_celsius <- function(temp_k) {
 [chapter]: http://adv-r.had.co.nz/Environments.html
 [adv-r]: http://adv-r.had.co.nz/
 
+---
+ 
+# Matching Arguments
+
+To be precise, R has three ways that arguments are supplied
+by you are matched to the *formal arguments* of the function definition:
+
+1. by complete name,
+2. by partial name (matching on initial *n* characters of the argument name), and
+3. by position.
+
+Arguments are matched in the manner outlined above in *that order*: by
+complete name, then by partial matching of names, and finally by position.
+
+
+~~~
+display <- function(a, b, c) {
+  result <- c(a, b, c)
+  # This names each element of the vector
+  names(result) <- c("a", "b", "c")
+  return(result)
+}
+display(1, 2, 3)
+~~~
+{: .r}
+
+
+
+~~~
+a b c 
+1 2 3 
+~~~
+{: .output}
+
+
+
+~~~
+display(3, 2, 1)
+~~~
+{: .r}
+
+
+
+~~~
+a b c 
+3 2 1 
+~~~
+{: .output}
+
+Now lets call the function with named arguments.
+
+
+~~~
+display(a = 3, b = 2, c = 1)
+~~~
+{: .r}
+
+
+
+~~~
+a b c 
+3 2 1 
+~~~
+{: .output}
+
+
+
+~~~
+display(c = 1, b = 2, a = 3)
+~~~
+{: .r}
+
+
+
+~~~
+a b c 
+3 2 1 
+~~~
+{: .output}
+In that case the order does not matter.
+
+# Defining default function arguments
+
+This is handy: if we usually want a function to work one way, but occasionally
+need it to do something else, we can allow people to pass an argument when they
+need to but provide a default to make the normal case easier.
+
+
+~~~
+display <- function(a = 1, b = 2, c = 3) {
+  result <- c(a, b, c)
+  # This names each element of the vector
+  names(result) <- c("a", "b", "c")
+  return(result)
+}
+~~~
+{: .r}
+We can now call the function without providing any arguments because we defined
+a set of default values.
+
+
+~~~
+display()
+~~~
+{: .r}
+
+In such a case, the usage of named argument becomes even more important.
+
+
+~~~
+display(9)
+~~~
+{: .r}
+
+
+
+~~~
+a b c 
+9 2 3 
+~~~
+{: .output}
+
+
+
+~~~
+display(c = 9)
+~~~
+{: .r}
+
+
+
+~~~
+a b c 
+1 2 9 
+~~~
+{: .output}
+
+With that in hand, let's look at the help for `read.csv()`:
+
+
+~~~
+?read.csv
+~~~
+{: .r}
+
+There's a lot of information there, but the most important part is the first
+couple of lines:
+
+
+~~~
+read.csv(file, header = TRUE, sep = ",", quote = "\"",
+         dec = ".", fill = TRUE, comment.char = "", ...)
+~~~
+{: .r}
+
+This tells us that `read.csv()` has one argument, `file`, that doesn't have a
+default value, and six others that do.
+Now we understand why the following gives an error:
+
+
+~~~
+dat <- read.csv(FALSE, "data/inflammation-01.csv")
+~~~
+{: .r}
+
+
+
+~~~
+Error in read.table(file = file, header = header, sep = sep, quote = quote, : 'file' must be a character string or connection
+~~~
+{: .error}
+
+It fails because `FALSE` is assigned to `file` and the filename is assigned to
+the argument `header`.
+
+However, using the "correct" style the order does not matter.
+
+
+~~~
+dat <- read.csv(header = FALSE, file = "data/inflammation-01.csv")
+~~~
+{: .r}
+#
 
 ### Testing and Documenting
 
@@ -675,281 +858,3 @@ beginging of your test-file (see [here](https://github.com/r-lib/testthat/issues
 > > {: .r}
 > {: .solution}
 {: .challenge}
-
-> ## Writing Documentation
->
-> Formal documentation for R functions is written in separate `.Rd` using a
-> markup language similar to [LaTeX][]. You see the result of this documentation
-> when you look at the help file for a given function, e.g. `?read.csv`.
-> The [roxygen2][] package allows R coders to write documentation alongside
-> the function code and then process it into the appropriate `.Rd` files.
-> You will want to switch to this more formal method of writing documentation
-> when you start writing more complicated R projects.
-> 
-> It's still possible that our function is wrong, but it seems unlikely enough
-> that we should probably get back to doing our analysis.  We have one more task
-> first, though: we should write some [documentation]({{ page.root}}/reference#documentation) 
-> for our function to remind ourselves later what
-> it's for and how to use it.
-> 
-> A common way to put documentation in software is to add 
-> [comments]({{ page.root}}/reference/#comment) like this:
-> 
-> ~~~
-> center <- function(data, desired) {
->   # return a new vector containing the original data centered around the
->   # desired value.
->   # Example: center(c(1, 2, 3), 0) => c(-1, 0, 1)
->   new_data <- (data - mean(data)) + desired
->   return(new_data)
-> }
-> ~~~
-> {: .r}
-> [LaTeX]: http://www.latex-project.org/
-> [roxygen2]: http://cran.r-project.org/web/packages/roxygen2/vignettes/rd.html
-{: .callout}
-
-
-### Defining Defaults
-
-We have passed arguments to functions in two ways: directly, as in `mean(dat)`,
-and by name, as in `read.csv(file = "data/inflammation-01.csv", header =
-FALSE)`. In fact, we can pass the arguments to `read.csv` without naming them:
-
-
-~~~
-dat <- read.csv("data/inflammation-01.csv", FALSE)
-~~~
-{: .r}
-
-However, the position of the arguments matters if they are not named.
-
-
-~~~
-dat <- read.csv(FALSE, "data/inflammation-01.csv")
-~~~
-{: .r}
-
-
-
-~~~
-Error in read.table(file = file, header = header, sep = sep, quote = quote, : 'file' must be a character string or connection
-~~~
-{: .error}
-
-
-
-~~~
-dat <- read.csv(header = FALSE, file = "data/inflammation-01.csv")
-~~~
-{: .r}
-
-To understand what's going on, and make our own functions easier to use, let's
-re-define our `center` function like this:
-
-
-~~~
-center <- function(data, desired = 0) {
-  # return a new vector containing the original data centered around the
-  # desired value (0 by default).
-  # Example: center(c(1, 2, 3), 0) => c(-1, 0, 1)
-  new_data <- (data - mean(data)) + desired
-  return(new_data)
-}
-~~~
-{: .r}
-
-The key change is that the second argument is now written `desired = 0` instead
-of just `desired`.  If we call the function with two arguments, it works as it
-did before:
-
-
-~~~
-test_data <- c(0, 0, 0, 0)
-center(test_data, 3)
-~~~
-{: .r}
-
-
-
-~~~
-[1] 3 3 3 3
-~~~
-{: .output}
-
-But we can also now call `center()` with just one argument, in which case
-`desired` is automatically assigned the default value of `0`:
-
-
-~~~
-more_data <- 5 + test_data
-more_data
-~~~
-{: .r}
-
-
-
-~~~
-[1] 5 5 5 5
-~~~
-{: .output}
-
-
-
-~~~
-center(more_data)
-~~~
-{: .r}
-
-
-
-~~~
-[1] 0 0 0 0
-~~~
-{: .output}
-
-This is handy: if we usually want a function to work one way, but occasionally
-need it to do something else, we can allow people to pass an argument when they
-need to but provide a default to make the normal case easier.
-
-The example below shows how R matches values to arguments
-
-
-~~~
-display <- function(a = 1, b = 2, c = 3) {
-  result <- c(a, b, c)
-  # This names each element of the vector
-  names(result) <- c("a", "b", "c")
-  return(result)
-}
-
-# no arguments
-display()
-~~~
-{: .r}
-
-
-
-~~~
-a b c 
-1 2 3 
-~~~
-{: .output}
-
-
-
-~~~
-# one argument
-display(55)
-~~~
-{: .r}
-
-
-
-~~~
- a  b  c 
-55  2  3 
-~~~
-{: .output}
-
-
-
-~~~
-# two arguments
-display(55, 66)
-~~~
-{: .r}
-
-
-
-~~~
- a  b  c 
-55 66  3 
-~~~
-{: .output}
-
-
-
-~~~
-# three arguments
-display (55, 66, 77)
-~~~
-{: .r}
-
-
-
-~~~
- a  b  c 
-55 66 77 
-~~~
-{: .output}
-
-As this example shows, arguments are matched from left to right, and any that
-haven't been given a value explicitly get their default value. 
-We can override this behavior by naming the value as we pass it in:
-
-
-~~~
-# only setting the value of c
-display(c = 77)
-~~~
-{: .r}
-
-
-
-~~~
- a  b  c 
- 1  2 77 
-~~~
-{: .output}
-
-> ## Matching Arguments
->
-> To be precise, R has three ways that arguments are supplied
-> by you are matched to the *formal arguments* of the function definition:
->
-> 1. by complete name,
-> 2. by partial name (matching on initial *n* characters of the argument name), and
-> 3. by position.
->
-> Arguments are matched in the manner outlined above in *that order*: by
-> complete name, then by partial matching of names, and finally by position.
-{: .callout}
-
-With that in hand, let's look at the help for `read.csv()`:
-
-
-~~~
-?read.csv
-~~~
-{: .r}
-
-There's a lot of information there, but the most important part is the first
-couple of lines:
-
-
-~~~
-read.csv(file, header = TRUE, sep = ",", quote = "\"",
-         dec = ".", fill = TRUE, comment.char = "", ...)
-~~~
-{: .r}
-
-This tells us that `read.csv()` has one argument, `file`, that doesn't have a
-default value, and six others that do.
-Now we understand why the following gives an error:
-
-
-~~~
-dat <- read.csv(FALSE, "data/inflammation-01.csv")
-~~~
-{: .r}
-
-
-
-~~~
-Error in read.table(file = file, header = header, sep = sep, quote = quote, : 'file' must be a character string or connection
-~~~
-{: .error}
-
-It fails because `FALSE` is assigned to `file` and the filename is assigned to
-the argument `header`.
