@@ -28,7 +28,7 @@
 # H. Wickham (2015): Advanced R: debugging
 # P. Werner Blog Post (2013)
 browseURL("http://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf")
-browseURL("http://www.stats.uwo.ca/faculty/murdoch/software/debuggingR")
+browseURL("https://www.stats.umanitoba.ca/files/statsweb/2011/03/debugging.pdf")
 browseURL("http://adv-r.had.co.nz/Exceptions-Debugging.html")
 browseURL("https://www.r-bloggers.com/tracking-down-errors-in-r")
 
@@ -58,6 +58,7 @@ complex_stuff <- function(a, b)
   if (a > 0)   v <-  1
   if (a < 0)   v <- -1
   z <- b - v
+  return(z)
 }
 
 #...which throws an error under certain circumstances:
