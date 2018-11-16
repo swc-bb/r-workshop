@@ -116,16 +116,14 @@ sqrt( sum((a-b)^2)/length(b) )
 ~~~
 {: .r}
 
-We will use the `devtools` and `roxygen2` packages, which make creating packages in R relatively simple.
-First, install the `devtools` package, which will allow you to install the `roxygen2` package from GitHub ([code][]).
-
-[code]: https://github.com/klutometis/roxygen
-
+We will use the [`devtools`](https://cran.r-project.org/package=devtools) and
+[`roxygen2`](https://cran.r-project.org/package=roxygen2) packages, which make
+creating packages in R relatively simple. First, install both packages from
+CRAN:
 
 ~~~
-install.packages("devtools")
+install.packages(c("devtools", "roxygen2"))  # installations can be `c`ombined 
 library("devtools")
-install_github("klutometis/roxygen")
 library("roxygen2")
 ~~~
 {: .r}
