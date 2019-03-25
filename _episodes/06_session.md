@@ -3,6 +3,7 @@ title: Ggplot2
 teaching: 60
 exercises: 30
 questions:
+- "How can I convert a dataframe from wide to long format?"
 - "How is categorical data represented in R?"
 - "How do I work with factors?"
 - "How can I create publication-quality graphics in R?"
@@ -11,15 +12,69 @@ objectives:
 - "Know the difference between ordered and unordered factors."
 - "Be aware of some of the problems encountered when using factors."
 - "To be able to use ggplot2 to generate publication quality graphics."
-- "To understand the basic grammar of graphics, including the aesthetics and geometry layers, adding statistics, transforming scales, and coloring or panelling by groups."
+- "To understand the basic grammar of graphics, including the aesthetics and
+  geometry layers, adding statistics, transforming scales, and coloring or
+  panelling by groups."
 keypoints:
+- "The answer to the most questions in R: convert it to long format (normalize your data)"
 - "Factors are used to represent categorical data."
 - "Factors can be *ordered* or *unordered*."
 - "Some R functions have special methods for handling factors."
 - "Use `ggplot2` to create plots."
-- "Think about graphics in layers: aesthetics, geometry, statistics, scale transformation, and grouping."
+- "Think about graphics in layers: aesthetics, geometry, statistics, scale
+  transformation, and grouping."
+
 source: Rmd
 ---
+
+# Convert wide to long format
+INSERT: convert from wide to long using
+`gather()`
+
+~~~
+library(tidyverse)
+
+# Make a data frame in wide format, gdp per country
+df_wide = data.frame(date = c(as.Date("2001"), as.Date("2001")),
+                     austria = c(100, 200),
+                     sweden = c(300, 400))
+
+# Imagine adding another variable, that you want to compare with the gdp later
+# If we strictly stick to the wide format, that may look like that.
+
+df_wide = data.frame(date = c(as.Date("2001"), as.Date("2001")),
+                     austria_gdp = c(100, 200),
+                     austria_lifeexp = c(81, 82),
+                     sweden_gdp = c(300, 400),
+                     sweden_lifeexp = c(83, 84))
+
+# How do you continue to work with that kind of data, if you are ask to compute
+# summary stats for each country and variable.
+# * using indices 
+# * using regular expressions to find toe correct columns
+# * ... 
+
+# What if a colleague has a similar question and thinks very similar, but only
+# similar :-)
+
+df_wide = data.frame(date = c(as.Date("2001"), as.Date("2001")),
+                     gdp_austria = c(100, 200),
+                     gdp_sweden = c(300, 400),
+                     lifeexp_austria = c(81, 82),
+                     lifeexp_sweden = c(83, 84))
+
+# How does the index approach work ... ? Not at all!
+# The solution: long format instead of the wide format.
+
+df_long = gather(df_wide, variable_mix, value, -date)
+
+# This is first half of the cake:
+
+df_long = separate(df_long, variable_mix, c("variable", "country"), sep = "_")
+~~~
+{: .r}
+
+
 
 # Factors
 
