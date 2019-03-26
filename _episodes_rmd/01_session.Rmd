@@ -25,6 +25,7 @@ keypoints:
   transformation, and grouping."
 
 source: Rmd
+
 ---
 
 # Wide vs long data format
@@ -47,7 +48,6 @@ df_wide = data.frame(year = c("2001", "2001"),
                      sweden_lifeexp = c(83, 84))
 ```
 
-# Data manipulation with the "wide" format
 How do you continue to work with that kind of data, if you are ask to
 compute summary stats for each country and variable.
   * using indices 
@@ -66,10 +66,11 @@ df_wide = data.frame(year = c("2001", "2001"),
 
 ```
 
-```{r}
+## Data manipulation with the "wide" format
 How does the index approach work ... ? Not at all!
 The solution: long format instead of the wide format.
 
+```{r}
 df_long = tidyr::gather(df_wide, variable_mix, value, -year)
 
 # This is first half of the cake:
