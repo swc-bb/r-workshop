@@ -31,10 +31,6 @@ source: Rmd
 # Wide vs long data format
 
 
-```r
-library(tidyverse)
-```
-
 ```
 ## ── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──
 ```
@@ -52,20 +48,34 @@ library(tidyverse)
 ## ✖ dplyr::lag()    masks stats::lag()
 ```
 
+Read example data set from colleague "A".
+
+
 ```r
-# Make a data frame in wide format, gdp per country
-df_wide = data.frame(year = c("2001", "2001"),
-                     austria = c(100, 200),
-                     sweden = c(300, 400))
+df_wide_a = read_tsv("../data/colleague_a.tsv")
+```
 
-# Imagine adding another variable, that you want to compare with the gdp later
-# If we strictly stick to the wide format, that may look like that.
+```
+## Parsed with column specification:
+## cols(
+##   year = col_integer(),
+##   austria_gdp = col_integer(),
+##   austria_lifeexp = col_integer(),
+##   sweden_gdp = col_integer(),
+##   sweden_lifeexp = col_integer()
+## )
+```
 
-df_wide = data.frame(year = c("2001", "2001"),
-                     austria_gdp = c(100, 200),
-                     austria_lifeexp = c(81, 82),
-                     sweden_gdp = c(300, 400),
-                     sweden_lifeexp = c(83, 84))
+```r
+print(df_wide_a)
+```
+
+```
+## # A tibble: 2 x 5
+##    year austria_gdp austria_lifeexp sweden_gdp sweden_lifeexp
+##   <int>       <int>           <int>      <int>          <int>
+## 1  2001         100              81        300             83
+## 2  2001         200              82        400             84
 ```
 
 How do you continue to work with that kind of data, if you are ask to
@@ -78,12 +88,35 @@ What if a colleague has a similar question and thinks very similar, but
 only similar :-)
 
 
+
+Read example data set from colleague "B".
+
+
 ```r
-df_wide = data.frame(year = c("2001", "2001"),
-                     gdp_austria = c(100, 200),
-                     gdp_sweden = c(300, 400),
-                     lifeexp_austria = c(81, 82),
-                     lifeexp_sweden = c(83, 84))
+df_wide_b = read_tsv("../data/colleague_b.tsv")
+```
+
+```
+## Parsed with column specification:
+## cols(
+##   year = col_integer(),
+##   gdp_austria = col_integer(),
+##   gdp_sweden = col_integer(),
+##   lifeexp_austria = col_integer(),
+##   lifeexp_sweden = col_integer()
+## )
+```
+
+```r
+print(df_wide_b)
+```
+
+```
+## # A tibble: 2 x 5
+##    year gdp_austria gdp_sweden lifeexp_austria lifeexp_sweden
+##   <int>       <int>      <int>           <int>          <int>
+## 1  2001         100        300              81             83
+## 2  2001         200        400              82             84
 ```
 
 ## Data manipulation with the "wide" format
@@ -92,12 +125,28 @@ The solution: long format instead of the wide format.
 
 
 ```r
-df_long = tidyr::gather(df_wide, variable_mix, value, -year)
+df_long = tidyr::gather(df_wide_a, variable_mix, value, -year)
 
 # This is first half of the cake:
 
 df_long = tidyr::separate(df_long, 
-                          variable_mix, c("variable", "country"), sep = "_")
+                          variable_mix, c("country", "variable"), sep = "_")
+
+print(df_long)
+```
+
+```
+## # A tibble: 8 x 4
+##    year country variable value
+##   <int> <chr>   <chr>    <int>
+## 1  2001 austria gdp        100
+## 2  2001 austria gdp        200
+## 3  2001 austria lifeexp     81
+## 4  2001 austria lifeexp     82
+## 5  2001 sweden  gdp        300
+## 6  2001 sweden  gdp        400
+## 7  2001 sweden  lifeexp     83
+## 8  2001 sweden  lifeexp     84
 ```
 
 
@@ -304,14 +353,14 @@ Let's start off with an example:
 ```r
 library(ggplot2)
 
-gapminder = read.table("./data/gapminder-FiveYearData.csv",
+gapminder = read.table("../data/gapminder-FiveYearData.csv",
                        sep = ",", header = T)
 
 ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
   geom_point()
 ```
 
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png)
+![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-1.png)
 
 So the first thing we do is call the `ggplot` function. This function lets R
 know that we're creating a new plot, and any of the arguments we give the
@@ -336,7 +385,7 @@ By itself, the call to `ggplot` isn't enough to draw a figure:
 ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp))
 ```
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png)
+![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-1.png)
 
 
 We need to tell `ggplot` how we want to visually represent the data, which we
@@ -351,7 +400,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
   geom_point()
 ```
 
-![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-1.png)
+![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19-1.png)
 
 > ## Challenge 1
 >
@@ -364,7 +413,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
 > ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) + geom_point()
 > ```
 > 
-> ![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-1.png)
+> ![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-1.png)
 >
 > Hint: the gapminder dataset has a column called "year", which should appear
 > on the x-axis.
@@ -379,7 +428,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
 > > ggplot(data = gapminder, aes(x = year, y = lifeExp)) + geom_point()
 > > ```
 > > 
-> > ![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19-1.png)
+> > ![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-1.png)
 > > 
 > >
 > {: .solution}
@@ -409,7 +458,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
 > >   geom_point()
 > > ```
 > > 
-> > ![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-1.png)
+> > ![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-1.png)
 > > 
 > >
 > {: .solution}
@@ -428,7 +477,7 @@ ggplot(data = gapminder, aes(x=year, y=lifeExp, by=country, color=continent)) +
   geom_line()
 ```
 
-![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-1.png)
+![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23-1.png)
 
 Instead of adding a `geom_point` layer, we've added a `geom_line` layer. We've
 added the **by** *aesthetic*, which tells `ggplot` to draw a line for each
@@ -443,7 +492,7 @@ ggplot(data = gapminder, aes(x=year, y=lifeExp, by=country, color=continent)) +
   geom_line() + geom_point()
 ```
 
-![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-1.png)
+![plot of chunk unnamed-chunk-24](figure/unnamed-chunk-24-1.png)
 
 It's important to note that each layer is drawn on top of the previous layer. In
 this example, the points have been drawn *on top of* the lines. Here's a
@@ -456,7 +505,7 @@ ggplot(data = gapminder, aes(x=year, y=lifeExp, by=country)) +
   geom_line(aes(color=continent)) + geom_point()
 ```
 
-![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23-1.png)
+![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25-1.png)
 
 In this example, the *aesthetic* mapping of **color** has been moved from the
 global plot options in `ggplot` to the `geom_line` layer so it no longer applies
@@ -492,7 +541,7 @@ lines.
 > >  geom_point() + geom_line(aes(color=continent))
 > > ```
 > > 
-> > ![plot of chunk unnamed-chunk-24](figure/unnamed-chunk-24-1.png)
+> > ![plot of chunk unnamed-chunk-26](figure/unnamed-chunk-26-1.png)
 > > 
 > >
 > > The lines now get drawn over the points!
@@ -512,7 +561,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp, color=continent)) +
   geom_point()
 ```
 
-![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25-1.png)
+![plot of chunk unnamed-chunk-27](figure/unnamed-chunk-27-1.png)
 
 Currently it's hard to see the relationship between the points due to some strong
 outliers in GDP per capita. We can change the scale of units on the x axis using
@@ -528,7 +577,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
   geom_point(alpha = 0.5) + scale_x_log10()
 ```
 
-![plot of chunk unnamed-chunk-26](figure/unnamed-chunk-26-1.png)
+![plot of chunk unnamed-chunk-28](figure/unnamed-chunk-28-1.png)
 
 The `log10` function applied a transformation to the values of the gdpPercap
 column before rendering them on the plot, so that each multiple of 10 now only
@@ -551,7 +600,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
    geom_point() + scale_x_log10() + geom_smooth(method="lm")
 ```
 
-![plot of chunk unnamed-chunk-27](figure/unnamed-chunk-27-1.png)
+![plot of chunk unnamed-chunk-29](figure/unnamed-chunk-29-1.png)
 
 We can make the line thicker by *setting* the **size** aesthetic in the
 `geom_smooth` layer:
@@ -562,7 +611,7 @@ ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
   geom_point() + scale_x_log10() + geom_smooth(method="lm", size=1.5)
 ```
 
-![plot of chunk unnamed-chunk-28](figure/unnamed-chunk-28-1.png)
+![plot of chunk unnamed-chunk-30](figure/unnamed-chunk-30-1.png)
 
 
 There are two ways an *aesthetic* can be specified. Here we *set* the **size**
@@ -592,7 +641,7 @@ variables and their visual representation.
 > >  geom_smooth(method="lm", size=1.5)
 > > ```
 > > 
-> > ![plot of chunk unnamed-chunk-29](figure/unnamed-chunk-29-1.png)
+> > ![plot of chunk unnamed-chunk-31](figure/unnamed-chunk-31-1.png)
 > {: .solution}
 {: .challenge}
 
@@ -618,7 +667,7 @@ variables and their visual representation.
 > > geom_smooth(method="lm", size=1.5)
 > > ```
 > > 
-> > ![plot of chunk unnamed-chunk-30](figure/unnamed-chunk-30-1.png)
+> > ![plot of chunk unnamed-chunk-32](figure/unnamed-chunk-32-1.png)
 > >
 > {: .solution}
 {: .challenge}
@@ -649,7 +698,7 @@ ggplot(data = az.countries, aes(x = year, y = lifeExp, color=continent)) +
   geom_line() + facet_wrap( ~ country)
 ```
 
-![plot of chunk unnamed-chunk-31](figure/unnamed-chunk-31-1.png)
+![plot of chunk unnamed-chunk-33](figure/unnamed-chunk-33-1.png)
 
 The `facet_wrap` layer took a "formula" as its argument, denoted by the tilde
 (~). This tells R to draw a panel for each unique value in the country column
@@ -678,7 +727,7 @@ ggplot(data = az.countries, aes(x = year, y = lifeExp, color=continent)) +
   theme(axis.text.x=element_blank(), axis.ticks.x=element_blank())
 ```
 
-![plot of chunk unnamed-chunk-32](figure/unnamed-chunk-32-1.png)
+![plot of chunk unnamed-chunk-34](figure/unnamed-chunk-34-1.png)
 
 
 
@@ -705,7 +754,7 @@ ggplot(data = az.countries, aes(x = year, y = lifeExp, color=continent)) +
 > >  geom_density(alpha=0.6) + facet_wrap( ~ year) + scale_x_log10()
 > > ```
 > > 
-> > ![plot of chunk unnamed-chunk-33](figure/unnamed-chunk-33-1.png)
+> > ![plot of chunk unnamed-chunk-35](figure/unnamed-chunk-35-1.png)
 > {: .solution}
 {: .challenge}
 
@@ -726,7 +775,7 @@ library(sf)
 
 ```r
 # shape file location
-shp_file_countries = "./data/Countries/cntry00.shp"
+shp_file_countries = "../data/Countries/cntry00.shp"
 
 # read shapefile
 shp_countries = read_sf(shp_file_countries)
@@ -754,7 +803,7 @@ countries_joined = gapminder %>%
 ggplot(countries_joined) + geom_sf()
 ```
 
-![plot of chunk unnamed-chunk-34](figure/unnamed-chunk-34-1.png)
+![plot of chunk unnamed-chunk-36](figure/unnamed-chunk-36-1.png)
 
 ```r
 # plot only Europe for 2002
@@ -780,14 +829,14 @@ countries_joined = gapminder %>%
 ggplot(countries_joined) + geom_sf()
 ```
 
-![plot of chunk unnamed-chunk-34](figure/unnamed-chunk-34-2.png)
+![plot of chunk unnamed-chunk-36](figure/unnamed-chunk-36-2.png)
 
 ```r
 # plot data: colour value
 ggplot(countries_joined) + geom_sf(aes(fill = lifeExp))
 ```
 
-![plot of chunk unnamed-chunk-34](figure/unnamed-chunk-34-3.png)
+![plot of chunk unnamed-chunk-36](figure/unnamed-chunk-36-3.png)
 
 
 ```r
@@ -795,7 +844,7 @@ ggplot(countries_joined) + geom_sf(aes(fill = lifeExp))
 library(sf)
 
 # shape file location
-shp_file_continents = "./data/Continents/continent.shp"
+shp_file_continents = "../data/Continents/continent.shp"
 
 # read shapefile
 shp_continents = read_sf(shp_file_continents)
@@ -822,7 +871,7 @@ continents_joined = gapminder %>%
 ggplot(continents_joined) + geom_sf(aes(fill = lifeExp))
 ```
 
-![plot of chunk unnamed-chunk-35](figure/unnamed-chunk-35-1.png)
+![plot of chunk unnamed-chunk-37](figure/unnamed-chunk-37-1.png)
 > ## Challenge 6
 >
 > Why is the plot above flickering as it builds up? 
@@ -846,7 +895,7 @@ ggplot(continents_joined) + geom_sf(aes(fill = lifeExp))
 > >   ggplot() + geom_sf(aes(fill = mean_lifeExp))
 > > ```
 > > 
-> > ![plot of chunk unnamed-chunk-36](figure/unnamed-chunk-36-1.png)
+> > ![plot of chunk unnamed-chunk-38](figure/unnamed-chunk-38-1.png)
 > {: .solution}
 {: .challenge}
 

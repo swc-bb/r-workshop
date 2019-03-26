@@ -30,7 +30,7 @@ source: Rmd
 
 # Wide vs long data format
 
-```{r}
+```{r, echo = F}
 library(tidyverse)
 
 # Make a data frame in wide format, gdp per country
@@ -46,6 +46,14 @@ df_wide = data.frame(year = c("2001", "2001"),
                      austria_lifeexp = c(81, 82),
                      sweden_gdp = c(300, 400),
                      sweden_lifeexp = c(83, 84))
+write_tsv(df_wide, "../data/colleague_a.tsv")
+```
+
+Read example data set from colleague "A".
+
+```{r, echo = T}
+df_wide_a = read_tsv("../data/colleague_a.tsv")
+print(df_wide_a)
 ```
 
 How do you continue to work with that kind of data, if you are ask to
@@ -57,13 +65,21 @@ compute summary stats for each country and variable.
 What if a colleague has a similar question and thinks very similar, but
 only similar :-)
 
-```{r}
+```{r, echo = F}
 df_wide = data.frame(year = c("2001", "2001"),
                      gdp_austria = c(100, 200),
                      gdp_sweden = c(300, 400),
                      lifeexp_austria = c(81, 82),
                      lifeexp_sweden = c(83, 84))
 
+write_tsv(df_wide, "../data/colleague_b.tsv")
+```
+
+Read example data set from colleague "B".
+
+```{r, echo = T}
+df_wide_b = read_tsv("../data/colleague_b.tsv")
+print(df_wide_b)
 ```
 
 ## Data manipulation with the "wide" format
@@ -71,12 +87,15 @@ How does the index approach work ... ? Not at all!
 The solution: long format instead of the wide format.
 
 ```{r}
-df_long = tidyr::gather(df_wide, variable_mix, value, -year)
+df_long = tidyr::gather(df_wide_a, variable_mix, value, -year)
 
 # This is first half of the cake:
 
 df_long = tidyr::separate(df_long, 
-                          variable_mix, c("variable", "country"), sep = "_")
+                          variable_mix, c("country", "variable"),
+                          sep = "_")
+
+str(df_long)
 ```
 
 
@@ -234,7 +253,7 @@ Let's start off with an example:
 ```{r} 
 library(ggplot2)
 
-gapminder = read.table("./data/gapminder-FiveYearData.csv",
+gapminder = read.table("../data/gapminder-FiveYearData.csv",
                        sep = ",", header = T)
 
 ggplot(data = gapminder, aes(x = gdpPercap, y = lifeExp)) +
@@ -593,7 +612,7 @@ Here we will have a quick look, how we can use `geom_sf` to plot geospatial data
 library(sf)
 
 # shape file location
-shp_file_countries = "./data/Countries/cntry00.shp"
+shp_file_countries = "../data/Countries/cntry00.shp"
 
 # read shapefile
 shp_countries = read_sf(shp_file_countries)
@@ -629,7 +648,7 @@ ggplot(countries_joined) + geom_sf(aes(fill = lifeExp))
 library(sf)
 
 # shape file location
-shp_file_continents = "./data/Continents/continent.shp"
+shp_file_continents = "../data/Continents/continent.shp"
 
 # read shapefile
 shp_continents = read_sf(shp_file_continents)
